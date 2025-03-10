@@ -1,1 +1,142 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>26 - Raging sea</title><script defer="defer" src="bundle.e58d68a22d6228d44b4e.js"></script><link href="main.css" rel="stylesheet"></head><body><canvas class="webgl"></canvas></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: #555;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        .app-showcase {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        
+        .app-icon {
+            width: 120px;
+            height: 120px;
+            background-color: #f0f0f0;
+            border-radius: 24px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #007bff;
+        }
+        
+        .app-links {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .app-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+        
+        .app-link:hover {
+            background-color: #0056b3;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .feature {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .feature h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <div class="logo">App Name</div>
+                <ul class="nav-links">
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms of Service</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <section class="hero">
+                <h1>Welcome to App Name</h1>
+                <p>A beautifully designed application that helps you accomplish amazing things. Simple, intuitive, and powerful.</p>
+                
+                <div class="app-showcase">
+                    <div class="app-icon">App</div>
+                    <div class="app-links">
+                        <a href="#" class="app-link">Download Now</a>
+                        <a href="#" class="app-link">Learn More</a>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="content">
+                <h2>About Our App</h2>
+                <p>App Name is designed to provide users with a seamless experience for managing their daily tasks. Our minimalist approach ensures that you can focus on what matters most without distractions.</p>
+                
+                <div class="features">
+                    <div class="feature">
+                        <h3>Simple Design</h3>
+                        <p>Clean interface that puts your content front and center, eliminating unnecessary distractions.</p>
+                    </div>
+                    
+                    <div class="feature">
+                        <h3>Powerful Features</h3>
+                        <p>Despite its simplicity, our app packs all the features you need to be productive and efficient.</p>
+                    </div>
+                    
+                    <div class="feature">
+                        <h3>Privacy Focused</h3>
+                        <p>We take your privacy seriously. Your data is encrypted and never shared with third parties.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2023 App Name. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
