@@ -6,25 +6,38 @@
 }
 
 body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.6;
     color: #333;
-    background-color: #f9f9f9;
+    background-color: #f5f5f5;
+    letter-spacing: -0.011em;
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1140px;
     margin: 0 auto;
     padding: 0 20px;
+    position: relative;
+}
+
+.container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #e0e0e0 20%, #e0e0e0 80%, transparent);
 }
 
 /* Header & Navigation */
 header {
-    background-color: #fff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: #f5f5f5;
     position: sticky;
     top: 0;
     z-index: 100;
+    padding: 2rem 0;
 }
 
 nav {
@@ -35,9 +48,10 @@ nav {
 }
 
 .logo {
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-size: 1.25rem;
+    font-weight: 500;
     color: #333;
+    letter-spacing: -0.02em;
 }
 
 .nav-links {
@@ -51,8 +65,9 @@ nav {
 
 .nav-links a {
     text-decoration: none;
-    color: #555;
-    font-weight: 500;
+    color: #666;
+    font-weight: 400;
+    font-size: 0.9rem;
     transition: color 0.3s ease;
 }
 
@@ -70,10 +85,7 @@ main {
 }
 
 .content {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    padding: 40px;
+    padding: 40px 0;
     margin-bottom: 40px;
 }
 
