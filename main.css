@@ -53,10 +53,11 @@ body::before {
 	pointer-events: none;
 	z-index: 9999;
 	transition: opacity 0.2s ease;
+	opacity: 0;
 }
 
-body.hide-gridlines::before {
-	opacity: 0;
+body.show-gridlines::before {
+	opacity: 1;
 }
 
 /* Three pairs of horizontal red lines inside the inset box */
@@ -70,6 +71,7 @@ body::after {
 	pointer-events: none;
 	z-index: 9999;
 	transition: opacity 0.2s ease;
+	opacity: 0;
 	background-image:
 		/* horizontal lines (3 pairs) */
 		linear-gradient(to right, var(--pair-color), var(--pair-color)),
@@ -144,8 +146,8 @@ body::after {
 		calc(100% / 8 * 7 + var(--pair-gap) / 2) top;
 }
 
-body.hide-gridlines::after {
-	opacity: 0;
+body.show-gridlines::after {
+	opacity: 1;
 }
 
 /* ============================================

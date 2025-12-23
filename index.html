@@ -43,7 +43,7 @@
     </div>
 </section>
 
-<button id="grid-toggle" title="Toggle gridlines">Hide Grid</button>
+<button id="grid-toggle" title="Toggle gridlines">Show Grid</button>
 <script type="text/javascript" src="screenfull.js"></script>	
 <script type="text/javascript" src="windowfull.js"></script>	
 <script>
@@ -105,18 +105,18 @@
     const body = document.body;
     
     if (gridToggle) {
-        // Check localStorage for saved preference
-        const gridVisible = localStorage.getItem('gridVisible') !== 'false';
-        if (!gridVisible) {
-            body.classList.add('hide-gridlines');
-            gridToggle.textContent = 'Show Grid';
+        // Check localStorage for saved preference (default is hidden)
+        const gridVisible = localStorage.getItem('gridVisible') === 'true';
+        if (gridVisible) {
+            body.classList.add('show-gridlines');
+            gridToggle.textContent = 'Hide Grid';
         }
         
         gridToggle.addEventListener('click', function() {
-            body.classList.toggle('hide-gridlines');
-            const isHidden = body.classList.contains('hide-gridlines');
-            gridToggle.textContent = isHidden ? 'Show Grid' : 'Hide Grid';
-            localStorage.setItem('gridVisible', !isHidden);
+            body.classList.toggle('show-gridlines');
+            const isVisible = body.classList.contains('show-gridlines');
+            gridToggle.textContent = isVisible ? 'Hide Grid' : 'Show Grid';
+            localStorage.setItem('gridVisible', isVisible);
         });
     }
 </script>
