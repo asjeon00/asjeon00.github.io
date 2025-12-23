@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Portfolio</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet" href="main.css">
+		<link rel="apple-touch-icon" href="/media/png/touchicon.png" />
+	</head>
+	<body><header id="menu" class="hidden"><ul>
+		    <li><a href="https://asjeon00.github.io/">Andy's DevLog</a></li>
+		    <ul class="nav-level">
+                <li><a href="index.html">Projects</a></li>
+                <li><a href="blsclone.html">BLSclone</a></li>
+                <li><a href="yukon.html">Yukon</a></li>
+                <li><a href="kodak.html">Kodak</a></li>
+                <li><a href="newjeans.html">Newjeans</a></li>
+                <li><span>Newjeans</span></li>
+            </ul>
+	    </ul>
+    </header>
+<div id='fullwindow'></div>
+<section id="main">
+	<div id="breadcrumbs">
+		<ul class="nav-level">
+			<li><a href="/">Portfolio</a></li>
+			<ul class="nav-level">
+				<span>Projects</span>
+				<ul class="nav-level">
+					<li><span>Newjeans</span></li>
+				</ul>
+			</ul>
+		</ul>
+	</div>
+    <div id='content'>
+		<div id='columns'>
+			<!-- <div id="notes">example</div> -->
+			This is a placeholder paragraph for the Newjeans project. Here you can describe the project, its purpose, and the key features or concepts you want to highlight. This text will appear in the normal paragraph style.<br>
+			<br>
+			<blockquote>This is a placeholder blockquote for Newjeans. Blockquotes are used for indented text that stands out from the regular paragraphs. You can use this style for quotes, important notes, or to emphasize particular aspects of your project.</blockquote>
+			Another paragraph of normal text can follow the blockquote. This allows you to continue your narrative and provide additional context or details about the project.<br>
+			<br>
+			<img src="projectImages/newjeans.png"><br>
+			<br>
+			You can add more paragraphs as needed to fully explain your project. The structure allows for a mix of regular text and blockquotes to create visual variety and emphasis.<br>
+			<blockquote>Another blockquote can be used to highlight a different aspect of the project, such as technical details, design decisions, or user feedback. This creates a rhythm in the reading experience.</blockquote>
+			<blockquote>Multiple blockquotes can be placed consecutively if you want to present a series of related points or quotes in an indented format.</blockquote>
+			Final paragraph to wrap up the content section. You can add images, links, and other content as needed to complete your project documentation.<br>
+			<br>
+			<div id='notes' class='mono'>Newjeans, 2024<br/>Project Documentation<br/><br/>Resources<br>
+			<br>
+			<a href="#">Additional Resource Link</a><br>
+			<br>
+			References<br>
+			<a href="#">Related Project or Article</a><br>
+			</div></div>
+    </div>
+</section>
+
+<script type="text/javascript" src="screenfull.js"></script>	
+<script type="text/javascript" src="windowfull.js"></script>	
+<script>
+    var imgs = document.querySelectorAll('img,video');
+	var i;
+	var index;
+	for (i = 0; i < imgs.length; i++) {
+		if (screenfull.isEnabled) {
+    		imgs[i].addEventListener('click', function () {
+                screenfull.toggle(this);
+    		}, false);
+		} else {
+    		imgs[i].addEventListener('click', function () {
+                windowfull.toggle(this);
+    		}, false);
+        }
+	}
+</script>
+<button id="grid-toggle" title="Toggle gridlines">Hide Grid</button>
+<div id="badge-container" class="lower-right">
+    	    <div id='badge' class='small badge'>
+                <canvas class='centre'>loading...</canvas>            </div>
+    	</div>
+	<script>
+		// Grid toggle functionality
+		const gridToggle = document.getElementById('grid-toggle');
+		const body = document.body;
+		
+		// Check localStorage for saved preference
+		const gridVisible = localStorage.getItem('gridVisible') !== 'false';
+		if (!gridVisible) {
+			body.classList.add('hide-gridlines');
+			gridToggle.textContent = 'Show Grid';
+		}
+		
+		gridToggle.addEventListener('click', function() {
+			body.classList.toggle('hide-gridlines');
+			const isHidden = body.classList.contains('hide-gridlines');
+			gridToggle.textContent = isHidden ? 'Show Grid' : 'Hide Grid';
+			localStorage.setItem('gridVisible', !isHidden);
+		});
+	</script>
+	</body>
+</html>
+

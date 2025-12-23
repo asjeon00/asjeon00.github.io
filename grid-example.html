@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Grid System Example</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="main.css">
+</head>
+<body>
+	<header id="menu" class="hidden"></header>
+	<div id='fullwindow'></div>
+	
+	<!-- Grid Container - wraps all grid items -->
+	<div class="grid-container">
+		
+		<!-- Example 1: Picture in bottom right quadrant (4 squares = columns 5-8, rows 3-4) -->
+		<div class="grid-item grid-row-3 grid-col-5 grid-col-span-4 grid-row-span-2" style="overflow: hidden;">
+			<img src="App-Icon-1024x1024@1x.png" alt="Bottom right quadrant image" 
+			     style="width: 100%; height: 100%; object-fit: cover;">
+		</div>
+		
+		<!-- Example 2: Text in row 2, column 5, aligned top-right -->
+		<div class="grid-item grid-row-2 grid-col-5 grid-col-span-1 grid-row-span-1">
+			<div class="grid-align-top-right grid-padding">
+				<p>Text in row 2, column 5,<br>aligned top-right</p>
+			</div>
+		</div>
+		
+		<!-- Additional Examples -->
+		
+		<!-- Text in row 1, column 1, aligned center -->
+		<div class="grid-item grid-row-1 grid-col-1 grid-col-span-1 grid-row-span-1">
+			<div class="grid-align-center">
+				<p style="text-align: center;">Center</p>
+			</div>
+		</div>
+		
+		<!-- Large content spanning multiple cells -->
+		<!-- Note: For normal flow content, just put it directly in the grid-item -->
+		<div class="grid-item grid-row-1 grid-col-2 grid-col-span-3 grid-row-span-2">
+			<div class="grid-padding">
+				<h2>Large Content Area</h2>
+				<p>This spans 3 columns and 2 rows, starting at row 1, column 2.</p>
+			</div>
+		</div>
+		
+	</div>
+	
+	<div id="badge-container" class="lower-right">
+		<div id='badge' class='small badge'>
+			<canvas class='centre'>loading...</canvas>
+		</div>
+	</div>
+</body>
+</html>
+

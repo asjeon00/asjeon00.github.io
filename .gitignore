@@ -1,4 +1,1 @@
-# Ignore all HTML files except index.html
-*.html
-!index.html
-
+# No files ignored - track everything

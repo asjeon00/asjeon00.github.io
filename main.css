@@ -1,15 +1,22 @@
-*
-{
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-html,
-body
-{
-    overflow: hidden;
+/* Variables for red guideline pairs */
+:root {
+	--pair-gap: 8px;                 /* distance between the two lines in a pair */
+	--pair-weight: 1px;              /* thickness of each line */
+	--pair-color: rgba(255,0,0,0.6); /* color of the lines */
 }
 
+html, body {
+    height: 100%;
+    overflow: auto;
+}
 .webgl
 {
     position: fixed;
@@ -18,5 +25,655 @@ body
     outline: none;
 }
 
+body {
+	margin: 0;
+	width: 100%;
+	height: 100%;
+	font-family: sf-text, Helvetica, Arial, sans-serif;
+	font-size: 18px;
+	line-height: 22px;	
+	-webkit-font-smoothing: subpixel-antialiased;
+	-webkit-text-size-adjust: 100%;
+	background-image: 
+		/* linear-gradient(to right, #d0d0d0 1px, transparent 1px),
+		linear-gradient(to bottom, #d0d0d0 1px, transparent 1px); */
+	background-size: 6vw 6vw;
+	background-position: 2em 2em;
+	position: relative;
+}
+
+body::before {
+	content: '';
+	position: fixed;
+	top: 1rem;
+	left: 1rem;
+	right: 1rem;
+	bottom: 1rem;
+	border: 1px solid red;
+	pointer-events: none;
+	z-index: 9999;
+	transition: opacity 0.2s ease;
+}
+
+body.hide-gridlines::before {
+	opacity: 0;
+}
+
+/* Three pairs of horizontal red lines inside the inset box */
+body::after {
+	content: '';
+	position: fixed;
+	top: 1rem;
+	left: 1rem;
+	right: 1rem;
+	bottom: 1rem;
+	pointer-events: none;
+	z-index: 9999;
+	transition: opacity 0.2s ease;
+	background-image:
+		/* horizontal lines (3 pairs) */
+		linear-gradient(to right, var(--pair-color), var(--pair-color)),
+		linear-gradient(to right, var(--pair-color), var(--pair-color)),
+		linear-gradient(to right, var(--pair-color), var(--pair-color)),
+		linear-gradient(to right, var(--pair-color), var(--pair-color)),
+		linear-gradient(to right, var(--pair-color), var(--pair-color)),
+		linear-gradient(to right, var(--pair-color), var(--pair-color)),
+		/* vertical lines (7 pairs) */
+		linear-gradient(to bottom, var(--pair-color), var(--pair-color)),
+		linear-gradient(to bottom, var(--pair-color), var(--pair-color)),
+		linear-gradient(to bottom, var(--pair-color), var(--pair-color)),
+		linear-gradient(to bottom, var(--pair-color), var(--pair-color)),
+		linear-gradient(to bottom, var(--pair-color), var(--pair-color)),
+		linear-gradient(to bottom, var(--pair-color), var(--pair-color)),
+		linear-gradient(to bottom, var(--pair-color), var(--pair-color)),
+		linear-gradient(to bottom, var(--pair-color), var(--pair-color)),
+		linear-gradient(to bottom, var(--pair-color), var(--pair-color)),
+		linear-gradient(to bottom, var(--pair-color), var(--pair-color)),
+		linear-gradient(to bottom, var(--pair-color), var(--pair-color)),
+		linear-gradient(to bottom, var(--pair-color), var(--pair-color)),
+		linear-gradient(to bottom, var(--pair-color), var(--pair-color)),
+		linear-gradient(to bottom, var(--pair-color), var(--pair-color));
+	background-repeat: no-repeat;
+	background-size:
+		/* 6 horizontal sizes */
+		100% var(--pair-weight),
+		100% var(--pair-weight),
+		100% var(--pair-weight),
+		100% var(--pair-weight),
+		100% var(--pair-weight),
+		100% var(--pair-weight),
+		/* 14 vertical sizes */
+		var(--pair-weight) 100%,
+		var(--pair-weight) 100%,
+		var(--pair-weight) 100%,
+		var(--pair-weight) 100%,
+		var(--pair-weight) 100%,
+		var(--pair-weight) 100%,
+		var(--pair-weight) 100%,
+		var(--pair-weight) 100%,
+		var(--pair-weight) 100%,
+		var(--pair-weight) 100%,
+		var(--pair-weight) 100%,
+		var(--pair-weight) 100%,
+		var(--pair-weight) 100%,
+		var(--pair-weight) 100%;
+	/* positions - horizontal at 25%, 50%, 75% ± half the gap */
+	/* vertical at 1/8, 2/8, 3/8, 4/8, 5/8, 6/8, 7/8 ± half the gap */
+	background-position:
+		/* 6 horizontal positions */
+		left calc(25% - (var(--pair-gap) / 2)),
+		left calc(25% + (var(--pair-gap) / 2)),
+		left calc(50% - (var(--pair-gap) / 2)),
+		left calc(50% + (var(--pair-gap) / 2)),
+		left calc(75% - (var(--pair-gap) / 2)),
+		left calc(75% + (var(--pair-gap) / 2)),
+		/* 14 vertical positions */
+		calc(100% / 8 * 1 - var(--pair-gap) / 2) top,
+		calc(100% / 8 * 1 + var(--pair-gap) / 2) top,
+		calc(100% / 8 * 2 - var(--pair-gap) / 2) top,
+		calc(100% / 8 * 2 + var(--pair-gap) / 2) top,
+		calc(100% / 8 * 3 - var(--pair-gap) / 2) top,
+		calc(100% / 8 * 3 + var(--pair-gap) / 2) top,
+		calc(100% / 8 * 4 - var(--pair-gap) / 2) top,
+		calc(100% / 8 * 4 + var(--pair-gap) / 2) top,
+		calc(100% / 8 * 5 - var(--pair-gap) / 2) top,
+		calc(100% / 8 * 5 + var(--pair-gap) / 2) top,
+		calc(100% / 8 * 6 - var(--pair-gap) / 2) top,
+		calc(100% / 8 * 6 + var(--pair-gap) / 2) top,
+		calc(100% / 8 * 7 - var(--pair-gap) / 2) top,
+		calc(100% / 8 * 7 + var(--pair-gap) / 2) top;
+}
+
+body.hide-gridlines::after {
+	opacity: 0;
+}
+
+/* ============================================
+   GRID SYSTEM - Based on Red Guideline Pairs
+   ============================================
+   Grid Structure:
+   - 4 rows (0-25%, 25-50%, 50-75%, 75-100%)
+   - 8 columns (each 12.5% / 1/8 of width)
+   - Container is inset 1rem from all edges
+   ============================================ */
+
+/* Grid container - positioned inside the 1rem inset box */
+.grid-container {
+	position: fixed;
+	top: 1rem;
+	left: 1rem;
+	right: 1rem;
+	bottom: 1rem;
+	pointer-events: none;
+	z-index: 9998; /* Just below the red lines (z-index: 9999) */
+}
+
+/* Grid items - enable pointer events for content */
+/* Grid items MUST remain position: absolute to stay in the grid */
+/* For alignment, wrap content in a div inside the grid-item */
+.grid-item {
+	position: absolute !important; /* Force absolute positioning */
+	pointer-events: auto;
+}
+
+/* Row positions (top of each row) */
+.grid-row-1 { top: 0%; }
+.grid-row-2 { top: 25%; }
+.grid-row-3 { top: 50%; }
+.grid-row-4 { top: 75%; }
+
+/* Column positions (left of each column) */
+.grid-col-1 { left: calc(100% / 8 * 0); }
+.grid-col-2 { left: calc(100% / 8 * 1); }
+.grid-col-3 { left: calc(100% / 8 * 2); }
+.grid-col-4 { left: calc(100% / 8 * 3); }
+.grid-col-5 { left: calc(100% / 8 * 4); }
+.grid-col-6 { left: calc(100% / 8 * 5); }
+.grid-col-7 { left: calc(100% / 8 * 6); }
+.grid-col-8 { left: calc(100% / 8 * 7); }
+
+/* Row heights (spanning single rows) */
+.grid-row-span-1 { height: 25%; }
+
+/* Column widths (spanning single columns) */
+.grid-col-span-1 { width: calc(100% / 8); }
+
+/* Multi-row spanning */
+.grid-row-span-2 { height: 50%; }
+.grid-row-span-3 { height: 75%; }
+.grid-row-span-4 { height: 100%; }
+
+/* Multi-column spanning */
+.grid-col-span-2 { width: calc(100% / 8 * 2); }
+.grid-col-span-3 { width: calc(100% / 8 * 3); }
+.grid-col-span-4 { width: calc(100% / 8 * 4); }
+.grid-col-span-5 { width: calc(100% / 8 * 5); }
+.grid-col-span-6 { width: calc(100% / 8 * 6); }
+.grid-col-span-7 { width: calc(100% / 8 * 7); }
+.grid-col-span-8 { width: 100%; }
+
+/* Content alignment within grid cells - use these INSIDE a grid-item */
+/* The grid-item itself establishes the positioning context */
+.grid-align-top-left { position: absolute; top: 0; left: 0; }
+.grid-align-top-right { position: absolute; top: 0; right: 0; text-align: right; }
+.grid-align-top-center { position: absolute; top: 0; left: 50%; transform: translateX(-50%); text-align: center; }
+.grid-align-bottom-left { position: absolute; bottom: 0; left: 0; }
+.grid-align-bottom-right { position: absolute; bottom: 0; right: 0; text-align: right; }
+.grid-align-bottom-center { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); text-align: center; }
+.grid-align-middle-left { position: absolute; top: 50%; left: 0; transform: translateY(-50%); }
+.grid-align-middle-right { position: absolute; top: 50%; right: 0; transform: translateY(-50%); text-align: right; }
+.grid-align-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+
+/* Padding for content within grid cells (optional) */
+.grid-padding {
+	padding: 0.5em;
+}
+
+/* Example: Bottom right quadrant (4 squares = bottom 2 rows, right 4 columns) */
+.grid-bottom-right-quadrant {
+	position: absolute;
+	top: 50%; /* Start at row 3 (50%) */
+	left: calc(100% / 8 * 4); /* Start at column 5 */
+	width: calc(100% / 8 * 4); /* Span 4 columns */
+	height: 50%; /* Span 2 rows */
+}
+
+/* Example: Specific cell (row 2, column 5) */
+.grid-cell-2-5 {
+	position: absolute;
+	top: 25%; /* Row 2 starts at 25% */
+	left: calc(100% / 8 * 4); /* Column 5 starts at 4/8 = 50% */
+	width: calc(100% / 8); /* Single column width */
+	height: 25%; /* Single row height */
+}
+
+p {
+	margin-bottom: 1em;
+}
+
+img, video {
+	width: 100%;
+	padding: 1em;
+  	filter: grayscale(100%);
+}
+
+canvas {
+    /* border: 5px solid red; */
+}
+
+a:link,
+a:visited {
+    color: #00F;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #000;
+}
+
+a:active {
+	color:#FFF;
+}
+
+header {
+	position: relative;
+	padding: 1em;
+	z-index: 2;
+}
+
+header.homepage {
+	z-index: 10;
+}
+
+ul {
+	list-style-type: none;
+	padding-left: 1em;
+	margin: 0px;
+}
+
+ul:first-child {
+	padding-left: 0px;
+}
+
+blockquote {
+    font-family: sf-mono, monaco, courier, monospace;
+    font-size: 15px;
+    margin-block-start: 22px;
+    margin-block-end: 22px;
+    margin-left: 2em;
+    padding-left: 1em;
+}
+
+/* ids */
+
+#menu {
+	padding-bottom: 1em;
+}
+
+#main {
+	position: relative;
+	z-index: 1;
+}
+
+#badge-container {
+	position: fixed;
+	right: 0px;
+	width: 100%;
+    padding: 10px;
+}
+
+#badge {
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+#badge-container.lower-right {
+	bottom: 0px;
+	width: initial;
+}
+
+#breadcrumbs {
+	padding: 1em;
+	padding-bottom: 0px;
+	text-align: left;
+}
+
+#content {
+    padding: 1em;
+}
+
+#columns {
+    columns: 400px 6;
+    column-gap: 44px;
+    padding: 1em;
+}
+
+/* use margin instead of <br> */
+#columns div {
+    margin-bottom: 22px;
+}
+
+#columns .break {
+    break-after: column;
+    margin-bottom: 0px;
+}
+
+#notes {
+    border-top: 1px solid #000;
+    margin-top: 33px;
+    padding-top: 10px;
+    padding-bottom: 33vw;
+}
+
+#notes div {
+    margin-bottom: 0px;
+}
+
+#notes a::before {
+    padding-right: 10px;
+    content: "";
+    display:inline-block;
+    height:20px;
+    width:20px;
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+}
+
+#notes a[href$=".pdf"]::before {
+    background-image: url('/media/svg/pdf-1-k.svg');
+}
+
+#notes a:not([href$=".pdf"])::before {
+    background-image: url('/media/svg/arrow-up-right-1-k.svg');
+}
+
+#fullscreen {
+	/* width: auto; */
+	height: auto;
+}
+
+#fullscreen:-webkit-full-screen,
+#f:-webkit-full-screen,
+:-webkit-full-screen {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    margin: 0px;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    box-sizing: border-box;
+    background-color: #000;
+    filter: initial;
+}
+
+#fullscreen:-ms-fullscreen,
+:-ms-fullscreen {
+	width: auto;
+	height: auto;
+	margin: auto;
+  	filter: initial;
+}
+
+#fullwindow {
+    display: none;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    margin: 0px;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    background-color: #000;
+    z-index: +1;
+}
+
+/* classes */
+
+.mono {
+    font-family: sf-mono, monaco, courier, monospace;
+    font-size: 15px;
+}
+
+.large {
+    /* vw = viewport width % */
+    /* height based on width */
+	height: 80vh;
+}
+
+.small {
+    /* vw = viewport width % */
+    /* height based on width */
+	width: 33vw;
+	height: 33vw;
+}
+
+.half {
+    display: inline-block;
+    width: 49%;
+}
+
+.centre {
+	position: relative;
+    top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.v-centre {
+	position: relative;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
+.h-centre {
+	position: relative;
+	left: 50%;
+	-webkit-transform: translateX(-50%);
+	-ms-transform: translateX(-50%);
+	transform: translateX(-50%);
+}
+
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: block;
+}
+
+.fullwindow {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+	padding: initial;
+    object-fit: contain;
+    filter: initial;
+    z-index: +1;
+}
+
+.make blockquote {
+    margin-block-start: 15px;
+    margin-block-end: 15px;
+    margin-inline-start: 24px;
+    margin-inline-end: 0px;
+    font-size: 10px;
+    line-height: 15px;
+    text-indent: initial;
+}
+    
+.make #columns {
+    columns: 3;
+    column-gap: 50px;
+    width: 750px;
+}
+
+.make #about {
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+    border-top: inherit;
+    padding-bottom: 0;
+    /* break-after: page; */
+}
+
+.make #about blockquote {
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+    margin-top: 0px;
+}
+
+.make #about #print-or-download {
+    display: none;
+}
+
+.make #notes {
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #000;
+    font-size: 10px;
+    line-height: 15px;
+    break-inside: avoid;
+    word-wrap: break-word;
+}
+
+.make #notes a::before {
+    content: none;
+}
+
+.make #body {
+	font-family: sf-text, Helvetica, Arial, sans-serif; 
+    font-size: 12px;
+    line-height: 15px;
+    text-indent: 24px;
+}
+
+.make #body div {
+    margin-bottom: 0px;
+}
+
+.make #body img {
+    display: inline-block;
+    margin-left: -24px;
+}
+
+.make #body div:first-of-type {
+    text-indent: 0;
+}
+
+.make .skip-column {
+    /* break-after: page; */
+    /* PoP */
+    display: none;
+    /* end */
+}
+
+.pdf #columns {
+    columns: 100px 6;
+}
+
+.pdf #notes {
+    padding-bottom: 22px;
+}
+
+/* vertical iPad / horizontal iPhone */
+@media screen and (max-width: 768px) {
+    #columns .break {
+        break-after: initial;
+        margin-bottom: -22px;
+    }
+}
+
+/* vertical iPhone */
+@media screen and (max-width: 500px) {
+    #columns .break {
+        break-after: initial;
+        margin-bottom: -22px;
+    }
+}
+
+/* print (currently printing works best in chrome) */
+@media print { 
+    #content.make,
+    .make #columns {
+        padding: 0px;
+    }
+    /* firefox fix
+    img, video {
+        filter: none;
+    }
+    */
+    .make #body img {
+        margin-left: 0px;
+    }
+    .make video {
+        display: none;
+    }
+}
+
+
+/* Project preview images */
+#project-preview {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	overflow: hidden;
+	z-index: -1;
+	pointer-events: none;
+}
+
+.project-image {
+	position: absolute;
+	top: 50%;
+	left: 0;
+	width: 100%;
+	height: auto;
+	max-height: 100vh;
+	transform: translateY(-50%);
+	object-fit: contain;
+	opacity: 0;
+	clip-path: inset(0 100% 0 0);
+	transition: clip-path 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+	pointer-events: none;
+	filter: grayscale(100%);
+	padding: 1em;
+}
+
+.project-image.active {
+	opacity: 1;
+	clip-path: inset(0 0% 0 0);
+}
+
+/* Grid toggle button */
+#grid-toggle {
+	position: fixed;
+	top: 1rem;
+	right: 1rem;
+	z-index: 10000;
+	background: #fff;
+	border: 1px solid #000;
+	padding: 0.5em 1em;
+	cursor: pointer;
+	font-family: sf-text, Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	line-height: 1.2;
+	transition: background 0.2s ease, color 0.2s ease;
+}
+
+#grid-toggle:hover {
+	background: #000;
+	color: #fff;
+}
+
+#grid-toggle:active {
+	background: #333;
+}
 
 /*# sourceMappingURL=main.css.map*/
