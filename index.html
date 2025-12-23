@@ -1,179 +1,128 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spark The Daily Brain Trainer</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        /* Hero section styling */
-        .hero {
-            text-align: left;
-            padding: 80px 0 40px;
-        }
-        
-        .hero h1 {
-            font-size: 5rem;
-            margin-bottom: 40px;
-            font-weight: 700;
-            letter-spacing: -0.03em;
-            color: #333;
-        }
-        
-        .hero p {
-            font-size: 1.2rem;
-            color: #555;
-            max-width: 600px;
-            margin-bottom: 40px;
-            line-height: 1.5;
-        }
-        
-        /* Horizontal divider lines */
-        .divider {
-            height: 1px;
-            background-color: #ddd;
-            margin: 30px 0;
-            width: 100%;
-        }
-        
-        .multiple-dividers {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            margin: 40px 0;
-        }
-        
-        .multiple-dividers .divider {
-            margin: 0;
-        }
-        
-        /* Section styling */
-        .section-number {
-            font-size: 5rem;
-            font-weight: 700;
-            color: #e0e0e0;
-            margin-bottom: 20px;
-        }
-        
-        .content {
-            padding: 40px 0;
-        }
-        
-        .content h2 {
-            font-size: 2rem;
-            margin-bottom: 30px;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-        }
-        
-        /* Features grid with table-like styling */
-        .features {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 20px 40px;
-            margin-top: 40px;
-        }
-        
-        .feature-label {
-            font-weight: 500;
-            color: #555;
-            padding: 15px 0;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .feature-description {
-            padding: 15px 0;
-            border-bottom: 1px solid #eee;
-        }
-        
-        /* App showcase styling */
-        .app-showcase {
-            margin: 60px 0;
-        }
-        
-        .app-links {
-            display: flex;
-            gap: 20px;
-            margin-top: 30px;
-        }
-        
-        .app-link {
-            display: inline-block;
-            padding: 12px 24px;
-            background-color: #333;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: 500;
-            transition: background-color 0.3s ease;
-        }
-        
-        .app-link:hover {
-            background-color: #555;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <header>
-            <nav>
-                <div class="logo">Yoo Il-ha</div>
-                <ul class="nav-links">
-                    <li><a href="index.html" class="active">Home</a></li>
-                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                    <li><a href="terms.html">Terms of Service</a></li>
-                </ul>
-            </nav>
-        </header>
-
-        <main>
-            <section class="hero">
-                <h1>Developer<br>Portfolio</h1>
-                <p>A collection of projects and applications built with modern technologies. Simple, intuitive, and powerful solutions for real-world problems.</p>
-            </section>
-            
-            <div class="multiple-dividers">
-                <div class="divider"></div>
-                <div class="divider"></div>
-                <div class="divider"></div>
-            </div>
-            
-            <section class="content">
-                <div class="section-number">1</div>
-                <h2>Projects that have:</h2>
-                
-                <div class="features">
-                    <div class="feature-label">(A)</div>
-                    <div class="feature-description">A growth story</div>
-                    
-                    <div class="feature-label">(B)</div>
-                    <div class="feature-description">A distinct advantage</div>
-                    
-                    <div class="feature-label">(C)</div>
-                    <div class="feature-description">A simple business model</div>
-                    
-                    <div class="feature-label">(D)</div>
-                    <div class="feature-description">Profitable implementation</div>
-                    
-                    <div class="feature-label">(E)</div>
-                    <div class="feature-description">Operational success</div>
-                    
-                    <div class="feature-label">(F)</div>
-                    <div class="feature-description">Great technology</div>
-                </div>
-                
-                <div class="app-showcase">
-                    <div class="app-links">
-                        <a href="#" class="app-link">View Projects</a>
-                        <a href="#" class="app-link">Contact Me</a>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <footer>
-            <p>&copy; 2023 Andy Jeon. All rights reserved.</p>
-        </footer>
+<html>
+	<head>
+		<title>Portfolio</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet" href="main.css">
+		<link rel="apple-touch-icon" href="/media/png/touchicon.png" />
+	</head>
+	<body><header id="menu"><ul>
+		    <li><a href="https://asjeon00.github.io/">Andy's DevLog</a></li>
+		    <ul class="nav-level">
+                <li><a href="https://asjeon.vercel.app/blsclone">BLSclone</a></li>
+                <li><a href="https://asjeon.vercel.app/yukon">Yukon</a></li>
+                <li><a href="https://asjeon.vercel.app/kodak">Kodak</a></li>
+                <li><a href="https://asjeon.vercel.app/NewJeans">Newjeans</a></li>
+            </ul>
+	    </ul>
+    </header>
+<div id='fullwindow'></div>
+<div class="grid-container">
+	<div class="grid-item grid-row-4 grid-col-8 grid-row-span-1 grid-col-span-1">
+		<div class="grid-align-bottom-right grid-padding">
+			I like to design and code websites, writings coming soon.
+		</div>
+	</div>
+</div>
+<section id="main">
+	<div id="breadcrumbs">
+		<ul class="nav-level">
+			<!-- <li><a href="/">Portfolio</a></li> -->
+		</ul>
+	</div>
+    <div id='content'>
+		<div id='columns'>
+		</div>
+		<div id="project-preview">
+			<img id="preview-blsclone" class="project-image" src="projectImages/blsclone.png" alt="BLSclone">
+			<img id="preview-yukon" class="project-image" src="projectImages/yukon.png" alt="Yukon">
+			<img id="preview-kodak" class="project-image" src="projectImages/kodak.png" alt="Kodak">
+			<img id="preview-newjeans" class="project-image" src="projectImages/newjeans.png" alt="Newjeans">
+		</div>
     </div>
-</body>
+</section>
+
+<button id="grid-toggle" title="Toggle gridlines">Hide Grid</button>
+<script type="text/javascript" src="screenfull.js"></script>	
+<script type="text/javascript" src="windowfull.js"></script>	
+<script>
+    var imgs = document.querySelectorAll('img,video');
+	var i;
+	var index;
+	for (i = 0; i < imgs.length; i++) {
+		if (screenfull.isEnabled) {
+    		imgs[i].addEventListener('click', function () {
+                screenfull.toggle(this);
+    		}, false);
+		} else {
+    		imgs[i].addEventListener('click', function () {
+                windowfull.toggle(this);
+    		}, false);
+        }
+	}
+
+    // Project image hover reveal
+    const projectLinks = {
+        'https://asjeon.vercel.app/blsclone': 'preview-blsclone',
+        'https://asjeon.vercel.app/yukon': 'preview-yukon',
+        'https://asjeon.vercel.app/kodak': 'preview-kodak',
+        'https://asjeon.vercel.app/NewJeans': 'preview-newjeans'
+    };
+
+    const projectImages = document.querySelectorAll('.project-image');
+    
+    // Get all navigation links in the nav-level
+    const navLinks = document.querySelectorAll('#menu .nav-level a');
+    
+    navLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        const imageId = projectLinks[href];
+        
+        if (imageId) {
+            const targetImage = document.getElementById(imageId);
+            
+            link.addEventListener('mouseenter', function() {
+                // Remove active class from all images
+                projectImages.forEach(img => img.classList.remove('active'));
+                // Add active class to target image
+                if (targetImage) {
+                    targetImage.classList.add('active');
+                }
+            });
+            
+            link.addEventListener('mouseleave', function() {
+                // Remove active class when mouse leaves
+                if (targetImage) {
+                    targetImage.classList.remove('active');
+                }
+            });
+        }
+    });
+
+    // Grid toggle functionality
+    const gridToggle = document.getElementById('grid-toggle');
+    const body = document.body;
+    
+    if (gridToggle) {
+        // Check localStorage for saved preference
+        const gridVisible = localStorage.getItem('gridVisible') !== 'false';
+        if (!gridVisible) {
+            body.classList.add('hide-gridlines');
+            gridToggle.textContent = 'Show Grid';
+        }
+        
+        gridToggle.addEventListener('click', function() {
+            body.classList.toggle('hide-gridlines');
+            const isHidden = body.classList.contains('hide-gridlines');
+            gridToggle.textContent = isHidden ? 'Show Grid' : 'Hide Grid';
+            localStorage.setItem('gridVisible', !isHidden);
+        });
+    }
+</script>
+<div id="badge-container" class="lower-right">
+    	    <div id='badge' class='small badge'>
+                <canvas class='centre'>loading...</canvas>            </div>
+    	</div>
+	</body>
 </html>
