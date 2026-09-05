@@ -540,12 +540,14 @@
   gap: 12px;
   width: 100%;
   pointer-events: auto;
+  margin-bottom: min(40vh, 320px);
 }
 
 @media (min-width: 900px) and (min-aspect-ratio: 1/1) {
   .archive__wip-main {
     grid-column: 9 / -1;
     align-self: center;
+    margin-bottom: 0;
   }
 }
 
