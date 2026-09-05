@@ -10,6 +10,7 @@ import {
 } from "./uniforms";
 import { paperUniforms } from "./passes/paper/uniforms";
 import { globalPaperController } from "./passes/paper/paper-controller";
+import { globalBeadHoverController } from "./passes/hover/bead-hover-controller";
 import type { LightPipelineGraph } from "./types";
 
 export function bindLightGraph(
@@ -84,6 +85,16 @@ export function bindLightGraph(
     debugEnvironment: debug.texture,
     environmentSampler: runtime.environmentSampler,
   });
+  if (graph.glassHover && graph.beadAtlas) {
+    globalBeadHoverController.update();
+    const hoverUniforms = globalBeadHoverController.getUniforms();
+    graph.glassHover.set({
+      params: glassParams,
+      hover: hoverUniforms,
+      beadAtlas: graph.beadAtlas.texture,
+      beadSampler: graph.beadAtlas.sampler,
+    });
+  }
   graph.glassAccent.set({
     params: glassParams,
     accent: lightGlassAccentUniforms(),

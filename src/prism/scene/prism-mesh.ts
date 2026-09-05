@@ -101,10 +101,14 @@ export function prismMeshData(
   const dx = GO_GRID_SPACING;
   const dy = GO_GRID_SPACING * GO_CELL_ASPECT;
   const companionPositions: readonly [number, number][] = [
-    [dx, 0],   // (1, 0) - adjacent right
-    [-dx, 0],  // (-1, 0) - adjacent left (forming 3-in-a-row with Tengen)
-    [0, dy],   // (0, 1) - adjacent up
-    [dx, dy],  // (1, 1) - adjacent up-right (diagonal to Tengen, adjacent to (1, 0) and (0, 1))
+    [dx, 0],    // 1: (1, 0) - adjacent right
+    [-dx, 0],   // 2: (-1, 0) - adjacent left
+    [0, dy],    // 3: (0, 1) - adjacent up
+    [dx, dy],   // 4: (1, 1) - adjacent up-right
+    [-dx, dy],  // 5: (-1, 1) - top left
+    [-dx, -dy], // 6: (-1, -1) - bottom left
+    [0, -dy],   // 7: (0, -1) - one below center
+    // (1, -1) bottom-right is omitted intentionally
   ];
 
   for (const [cx, cy] of companionPositions) {

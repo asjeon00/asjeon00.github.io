@@ -32,6 +32,7 @@ export function renderLightGraph(
         pass.draw(graph.copyBackdrop);
         if (runtime.controls.view === "glass") {
           pass.draw(graph.glassFront);
+          if (graph.glassHover) pass.draw(graph.glassHover);
           pass.draw(graph.glassAccent);
           if (runtime.controls.wireframe && graph.wireframe)
             pass.draw(graph.wireframe);

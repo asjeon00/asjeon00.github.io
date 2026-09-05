@@ -5,6 +5,7 @@ import {
   loadLightAssetTextures,
   type LightTextureLoader,
 } from "./assets/loader";
+import { createBeadAtlas } from "./passes/hover/bead-atlas";
 import {
   createLightDebugSources,
   PRISM_DEBUG_SOURCES,
@@ -82,6 +83,10 @@ export function createLightPipeline(
       const assetsReady = ownedAssets
         ? Promise.resolve(ownedAssets)
         : loadLightAssetTextures(runtime.gpu, loader);
+      const ownedAtlas = graph.beadAtlas;
+      const atlasReady = ownedAtlas
+        ? Promise.resolve(ownedAtlas)
+        : createBeadAtlas(runtime.gpu);
       // Pipeline compilation needs only the target signatures, so overlap it
       // with both environment generation and the one-time asset bake.
       const graphReady = Promise.resolve().then(() =>
@@ -92,12 +97,15 @@ export function createLightPipeline(
       // still-running sibling. Asset failure keeps the old sequential error
       // precedence, while an environment failure releases newly-loaded files
       // before it escapes.
-      const [assetsResult, environmentResult, graphResult] =
-        await Promise.allSettled([assetsReady, environmentReady, graphReady]);
+      const [assetsResult, environmentResult, graphResult, atlasResult] =
+        await Promise.allSettled([assetsReady, environmentReady, graphReady, atlasReady]);
       const loaded =
         assetsResult.status === "fulfilled" ? assetsResult.value : undefined;
+      const loadedAtlas =
+        atlasResult.status === "fulfilled" ? atlasResult.value : undefined;
       if (destroyed) {
         if (!ownedAssets) destroyLightAssetTextures(loaded);
+        if (!ownedAtlas) loadedAtlas?.destroy();
         return;
       }
       if (assetsResult.status === "rejected") throw assetsResult.reason;
@@ -109,7 +117,11 @@ export function createLightPipeline(
         if (!ownedAssets) destroyLightAssetTextures(loaded);
         throw graphResult.reason;
       }
+      if (atlasResult.status === "rejected") {
+        console.warn("[LightPipeline] Bead atlas loading warning:", atlasResult.reason);
+      }
       graph.assets = loaded;
+      graph.beadAtlas = loadedAtlas;
       bindLightGraph(graph, runtime);
       if (destroyed) return;
       recordLightBackdropBundle(graph, runtime);
@@ -171,6 +183,8 @@ export function createLightPipeline(
       graph.prismShadowGeometry.destroy();
       destroyLightAssetTextures(graph.assets);
       graph.assets = undefined;
+      graph.beadAtlas?.destroy();
+      graph.beadAtlas = undefined;
     },
   };
 }
@@ -219,6 +233,7 @@ function compileGraph(
     ...(graph.lightWireframe ? [graph.lightWireframe.compile(backdrop)] : []),
     graph.copyBackdrop.compile(scene),
     graph.glassFront.compile(scene),
+    ...(graph.glassHover ? [graph.glassHover.compile(scene)] : []),
     graph.glassAccent.compile(scene),
     ...(graph.wireframe ? [graph.wireframe.compile(scene)] : []),
     graph.present.compile(outputSignature),

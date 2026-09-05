@@ -1,343 +1,872 @@
-/* Typography & Typesetting System matching glauber.org/archive/meedee */
+/* ==========================================================================
+   Editorial Typography & Baduk Grid Layout for 8 Glass Bead Projects
+   Single-Entry, Non-Scrolling Layout with Central 3D Baduk Corridor
+   ========================================================================== */
 
 :root {
-  --archive-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --archive-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --archive-font-primary: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Inter", "Segoe UI", Roboto, sans-serif;
+  --archive-font-display: "Haas Grotesk Display", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Inter", sans-serif;
+  --archive-font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  --archive-size-display: clamp(1.85rem, 1.6rem + 0.9vw, 2.4rem);
-  --archive-size-title: clamp(1.2rem, 1.05rem + 0.5vw, 1.5rem);
-  --archive-size-label: 0.8125rem;
-  --archive-size-body: 0.875rem;
-  --archive-size-meta: 0.6875rem;
-  --archive-size-code: 0.75rem;
+  --archive-size-display: clamp(1.75rem, 1.4rem + 1.2vw, 2.5rem);
+  --archive-size-body: 0.875rem; /* 14px */
+  --archive-size-date: 0.8125rem; /* 13px */
+  --archive-size-meta: 0.6875rem; /* 11px */
+  --archive-size-tag: 0.6875rem; /* 11px */
 
-  --archive-text-primary: rgba(18, 18, 18, 0.92);
-  --archive-text-secondary: rgba(18, 18, 18, 0.65);
-  --archive-text-muted: rgba(18, 18, 18, 0.42);
+  --archive-leading-display: 1.1;
+  --archive-leading-body: 1.4;
+  --archive-leading-date: 1.15;
+  --archive-leading-meta: 1.1;
+
+  /* Stone Engraving Pigment (Light Mode) */
+  --archive-ink: #1e2025;
+  --archive-muted: #6b7280;
   --archive-border: rgba(0, 0, 0, 0.12);
-  --archive-bg-panel: rgba(255, 255, 255, 0.65);
+  --archive-card-bg: rgba(255, 255, 255, 0.35);
+  --archive-card-border: rgba(0, 0, 0, 0.1);
+  --archive-relief-shadow: 0 1px 0 rgba(255, 255, 255, 0.7), 0 -0.5px 0.5px rgba(0, 0, 0, 0.15);
 }
 
 .dark {
-  --archive-text-primary: rgba(245, 245, 245, 0.92);
-  --archive-text-secondary: rgba(245, 245, 245, 0.65);
-  --archive-text-muted: rgba(245, 245, 245, 0.42);
-  --archive-border: rgba(255, 255, 255, 0.14);
-  --archive-bg-panel: rgba(15, 15, 15, 0.65);
+  /* Stone Engraving Pigment (Dark Mode) */
+  --archive-ink: #f1f3f7;
+  --archive-muted: #9ca3af;
+  --archive-border: rgba(255, 255, 255, 0.12);
+  --archive-card-bg: rgba(18, 20, 26, 0.45);
+  --archive-card-border: rgba(255, 255, 255, 0.1);
+  --archive-relief-shadow: 0 1px 2px rgba(0, 0, 0, 0.85), 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
-/* Glass & Vignette Panel Container */
-.archive-container {
-  font-family: var(--archive-font-sans);
-  color: var(--archive-text-primary);
+/* --------------------------------------------------------------------------
+   Material Text Treatment
+   -------------------------------------------------------------------------- */
+.archive-embedded-text {
+  mix-blend-mode: multiply;
+  text-shadow: var(--archive-relief-shadow);
+  color: var(--archive-ink);
+  transition: color 0.3s ease;
+}
+
+.dark .archive-embedded-text {
+  mix-blend-mode: screen;
+}
+
+/* --------------------------------------------------------------------------
+   Root Layout: Non-Scrolling Single Viewport
+   -------------------------------------------------------------------------- */
+.archive-root {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  max-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 20;
+  pointer-events: auto;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+}
+
+.archive-root::-webkit-scrollbar {
+  width: 4px;
+}
+.archive-root::-webkit-scrollbar-track {
+  background: transparent;
+}
+.archive-root::-webkit-scrollbar-thumb {
+  background: var(--archive-border);
+  border-radius: 4px;
+}
+
+.archive__wrapper {
+  width: 100%;
+  max-width: 1720px;
+  min-height: 100%;
+  margin: 0 auto;
+  padding: 24px 32px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-sizing: border-box;
   pointer-events: none;
 }
 
-.archive-container a,
-.archive-container button {
+@media (min-width: 900px) and (min-aspect-ratio: 1/1) {
+  .archive-root {
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .archive__wrapper {
+    height: 100%;
+    max-height: 100vh;
+    padding: 24px 32px 32px;
+    justify-content: space-between;
+  }
+}
+
+@media (min-width: 1024px) and (min-aspect-ratio: 1/1) {
+  .archive__wrapper {
+    padding: 28px 48px 36px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Top Header (Title, Year, Bead Badge, Actions)
+   -------------------------------------------------------------------------- */
+.archive__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 64px;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.archive__header-info {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
   pointer-events: auto;
 }
 
-/* Header & Title Typesetting */
-.archive-brand {
-  font-size: var(--archive-size-label);
+.archive__title {
+  font-family: var(--archive-font-display);
+  font-size: var(--archive-size-display);
+  line-height: var(--archive-leading-display);
   font-weight: 500;
-  letter-spacing: -0.01em;
-  color: var(--archive-text-primary);
-  text-decoration: none;
-  transition: opacity 0.2s ease;
+  letter-spacing: -0.025em;
+  margin: 0;
+  user-select: none;
+  white-space: nowrap;
 }
 
-.archive-brand:hover {
-  opacity: 0.65;
+/* --------------------------------------------------------------------------
+   Neutral State Landing Title ("Andy's Devlog")
+   Anchored to bottom-left with same font, larger weight, and engraved relief
+   -------------------------------------------------------------------------- */
+.neutral-hero-title {
+  font-family: var(--archive-font-display);
+  font-size: clamp(2.25rem, 1.8rem + 2.4vw, 4.25rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  margin: 0;
+  user-select: none;
+  white-space: nowrap;
+  color: var(--archive-ink);
+  text-shadow: var(--archive-relief-shadow);
+  mix-blend-mode: multiply;
+  transition: color 0.3s ease;
 }
 
-.archive-wip-tag {
+.dark .neutral-hero-title {
+  mix-blend-mode: screen;
+}
+
+.archive__title-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.archive__title-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.15rem 0.45rem;
-  font-size: var(--archive-size-meta);
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  border-radius: 9999px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: var(--archive-muted);
+  background: var(--archive-card-bg);
   border: 1px solid var(--archive-border);
-  background: var(--archive-bg-panel);
   backdrop-filter: blur(12px);
-  color: var(--archive-text-secondary);
-  line-height: 1;
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), var(--archive-relief-shadow);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+  cursor: pointer;
+  pointer-events: auto;
 }
 
-.archive-title-group {
-  display: flex;
-  align-items: baseline;
-  gap: 0.65rem;
+.archive__title-link:hover {
+  color: var(--archive-ink);
+  border-color: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.08);
+  transform: translate(1px, -1px);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12), var(--archive-relief-shadow);
 }
 
-.archive-title {
-  font-size: var(--archive-size-display);
-  font-weight: 500;
-  line-height: 1.05;
-  letter-spacing: -0.035em;
-  color: var(--archive-text-primary);
-  margin: 0;
+.dark .archive__title-link:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), var(--archive-relief-shadow);
 }
 
-.archive-year {
-  font-size: var(--archive-size-display);
-  font-weight: 400;
-  line-height: 1.05;
-  letter-spacing: -0.035em;
-  color: var(--archive-text-muted);
-  margin: 0;
+.archive__title-link-icon {
+  width: 17px;
+  height: 17px;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.archive-status {
-  font-size: var(--archive-size-meta);
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: var(--archive-text-muted);
+.archive__title-link:hover .archive__title-link-icon {
+  transform: translate(1.5px, -1.5px);
 }
 
-/* Date & Narrative Typesetting */
-.archive-date {
-  font-family: var(--archive-font-mono);
-  font-size: var(--archive-size-meta);
-  font-weight: 500;
-  letter-spacing: 0.03em;
-  color: var(--archive-text-secondary);
-  text-transform: uppercase;
-  margin-bottom: 0.5rem;
-}
-
-.archive-narrative {
-  font-size: var(--archive-size-body);
-  line-height: 1.52;
-  font-weight: 400;
-  color: var(--archive-text-secondary);
-  text-wrap: pretty;
-  margin-bottom: 0.75rem;
-}
-
-.archive-narrative:last-child {
-  margin-bottom: 0;
-}
-
-/* Specs Table / Baduk Cell Details */
-.archive-specs-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.5rem 1rem;
-  padding-top: 0.75rem;
-  margin-top: 0.75rem;
-  border-top: 1px solid var(--archive-border);
-}
-
-.archive-spec-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-}
-
-.archive-spec-label {
-  font-family: var(--archive-font-mono);
-  font-size: 0.625rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--archive-text-muted);
-}
-
-.archive-spec-val {
-  font-family: var(--archive-font-mono);
-  font-size: var(--archive-size-meta);
-  font-weight: 500;
-  color: var(--archive-text-primary);
-}
-
-/* Right Wing: Media Stage & Carousel */
-.archive-stage-card {
-  position: relative;
-  overflow: hidden;
-  border-radius: 0.75rem;
+.archive__bead-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  background: var(--archive-card-bg);
   border: 1px solid var(--archive-border);
-  background: var(--archive-bg-panel);
-  backdrop-filter: blur(16px);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
-}
-
-.archive-media-frame {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  background: rgba(0, 0, 0, 0.03);
-  overflow: hidden;
-}
-
-.archive-media-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
-}
-
-.archive-media-caption {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   font-family: var(--archive-font-mono);
-  font-size: 0.65rem;
-  color: var(--archive-text-muted);
-  padding: 0.5rem 0.75rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  border-top: 1px solid var(--archive-border);
-  background: rgba(255, 255, 255, 0.1);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--archive-muted);
+  text-transform: uppercase;
+  user-select: none;
 }
 
-/* Nav Controls */
-.archive-stage-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+.archive__header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  pointer-events: auto;
+}
+
+/* Quick Project Switcher in Header */
+.archive__project-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 6px;
+  border-radius: 100px;
+  background: var(--archive-card-bg);
+  border: 1px solid var(--archive-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.archive__project-nav-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 9999px;
-  background: rgba(0, 0, 0, 0.5);
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--archive-ink);
   cursor: pointer;
-  opacity: 0;
-  transition: all 0.2s ease;
-  z-index: 5;
+  transition: background 0.15s ease, transform 0.1s ease;
+  padding: 0;
 }
 
-.archive-stage-card:hover .archive-stage-nav {
-  opacity: 0.85;
+.archive__project-nav-btn:hover {
+  background: rgba(0, 0, 0, 0.08);
 }
 
-.archive-stage-nav:hover {
-  opacity: 1 !important;
-  transform: translateY(-50%) scale(1.08);
+.dark .archive__project-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
 }
 
-.archive-stage-nav--prev {
-  left: 0.6rem;
+.archive__project-nav-btn:active {
+  transform: scale(0.92);
 }
 
-.archive-stage-nav--next {
-  right: 0.6rem;
+.archive__project-nav-indicator {
+  font-family: var(--archive-font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--archive-muted);
+  padding: 0 6px;
+  user-select: none;
 }
 
-/* Thumbnails Strip with Progress Bar (glauber.org signature) */
-.archive-thumbs-strip {
-  display: flex;
+/* Tactile Back / Exit Button */
+.archive__back-btn {
+  display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  margin-top: 0.5rem;
+  gap: 8px;
+  padding: 6px 14px 6px 10px;
+  border-radius: 100px;
+  font-family: var(--archive-font-primary);
+  font-size: var(--archive-size-date);
+  font-weight: 500;
+  color: var(--archive-ink);
+  background: var(--archive-card-bg);
+  border: 1px solid var(--archive-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), var(--archive-relief-shadow);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
 }
 
-.archive-thumb-btn {
-  position: relative;
-  flex: 1;
+.dark .archive__back-btn {
+  background: var(--archive-card-bg);
+  color: var(--archive-ink);
+  border-color: var(--archive-border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35), var(--archive-relief-shadow);
+}
+
+.archive__back-btn:hover {
+  background: rgba(0, 0, 0, 0.09);
+  border-color: rgba(0, 0, 0, 0.28);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12), var(--archive-relief-shadow);
+}
+
+.dark .archive__back-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), var(--archive-relief-shadow);
+}
+
+.archive__back-btn:active {
+  transform: translateY(0.5px);
+}
+
+.archive__back-btn-icon {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.archive__back-btn:hover .archive__back-btn-icon {
+  transform: translateX(-2px);
+}
+
+.archive__back-btn-label {
+  letter-spacing: -0.01em;
+  font-weight: 500;
+}
+
+.archive__back-btn-kbd {
+  font-family: var(--archive-font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  color: var(--archive-muted);
+  line-height: 1;
+}
+
+.dark .archive__back-btn-kbd {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: var(--archive-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Project Change Transition (Ease-Out / Ease-In)
+   -------------------------------------------------------------------------- */
+.archive__transition {
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.archive__transition--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.archive__transition--fading-out {
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.28s cubic-bezier(0.4, 0, 0.6, 1),
+              transform 0.28s cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+.archive__transition--fading-in {
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   Single Narrative Section (Left Wing + Center Space + Right Wing)
+   -------------------------------------------------------------------------- */
+.archive__single-view {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
-  padding: 0;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  outline: none;
+  gap: 0;
+  flex: 1;
+  min-height: 0;
+  pointer-events: none;
+  margin-top: 12px;
+  margin-bottom: 24px;
 }
 
-.archive-thumb-img-box {
+@media (min-width: 900px) and (min-aspect-ratio: 1/1) {
+  .archive__single-view {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 24px;
+    align-items: center;
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Left Wing (Columns 1-4 in grid): Date, Subtitle, Passage, Tags
+   -------------------------------------------------------------------------- */
+.archive__wip-side {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  pointer-events: auto;
+  max-width: 540px;
+}
+
+@media (min-width: 900px) and (min-aspect-ratio: 1/1) {
+  .archive__wip-side {
+    grid-column: 1 / 5;
+    align-self: center;
+    padding-right: 8px;
+    max-width: 440px;
+  }
+}
+
+.archive__wip-meta-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.archive__wip-date {
+  font-family: var(--archive-font-mono);
+  font-size: 0.9375rem;
+  line-height: 1.25;
+  font-weight: 600;
+  color: var(--archive-ink);
+  margin: 0 0 2px 0;
+  letter-spacing: -0.01em;
+}
+
+.archive__project-subtitle {
+  font-family: var(--archive-font-primary);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  font-weight: 500;
+  color: var(--archive-muted);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.archive__wip-text {
+  font-family: var(--archive-font-primary);
+  font-size: var(--archive-size-body);
+  line-height: var(--archive-leading-body);
+  font-weight: 450;
+  white-space: pre-line;
+  margin: 4px 0 0 0;
+  color: var(--archive-ink);
+  opacity: 0.92;
+  text-wrap: pretty;
+}
+
+.archive__tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.archive__tag-pill {
+  font-family: var(--archive-font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--archive-card-bg);
+  border: 1px solid var(--archive-border);
+  color: var(--archive-muted);
+  letter-spacing: 0.02em;
+}
+
+/* --------------------------------------------------------------------------
+   Center Corridor: 50vh Clear Gap for 3D Glass Beads when in-line/stacked
+   Columns 5-8 when in 12-column landscape grid
+   -------------------------------------------------------------------------- */
+.archive__center-corridor {
+  display: block;
+  height: 50vh;
+  min-height: 50vh;
+  width: 100%;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+@media (min-width: 900px) and (min-aspect-ratio: 1/1) {
+  .archive__center-corridor {
+    display: block;
+    grid-column: 5 / 9;
+    pointer-events: none;
+    height: 100%;
+    min-height: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Right Wing (Columns 9-12 in grid): Viewfinder Stage & Minimap
+   -------------------------------------------------------------------------- */
+.archive__wip-main {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  pointer-events: auto;
+}
+
+@media (min-width: 900px) and (min-aspect-ratio: 1/1) {
+  .archive__wip-main {
+    grid-column: 9 / -1;
+    align-self: center;
+  }
+}
+
+/* Viewfinder Architectural Stage */
+.archive__placeholder-stage {
+  width: 100%;
+  max-height: min(48vh, 440px);
+  position: relative;
+  border-radius: 6px;
+  border: 1px solid var(--archive-border);
+  background: var(--archive-card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.dark .archive__placeholder-stage {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+.archive__placeholder-stage:hover {
+  border-color: rgba(0, 0, 0, 0.28);
+}
+
+.dark .archive__placeholder-stage:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+/* Stage Top Info Header */
+.archive__stage-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  z-index: 10;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.25) 0%, transparent 100%);
+}
+
+.dark .archive__stage-header {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.45) 0%, transparent 100%);
+}
+
+/* Image Container */
+.archive__image-container {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1;
-  border-radius: 0.35rem;
-  overflow: hidden;
-  border: 1px solid var(--archive-border);
-  opacity: 0.5;
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.03);
 }
 
-.archive-thumb-btn[aria-current='true'] .archive-thumb-img-box {
-  opacity: 1;
-  border-color: var(--archive-text-primary);
-  transform: scale(1.02);
+.dark .archive__image-container {
+  background: rgba(0, 0, 0, 0.2);
 }
 
-.archive-thumb-btn:hover .archive-thumb-img-box {
-  opacity: 0.85;
-}
-
-.archive-thumb-img {
+.archive__image-element {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
+  opacity: 0;
+  transform: scale(0.99);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  user-select: none;
 }
 
-.archive-thumb-bar {
-  position: relative;
+.archive__image-element--loaded {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Baduk Grid Corner Ticks on Placeholders */
+.archive__grid-corner {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-color: var(--archive-muted);
+  pointer-events: none;
+  opacity: 0.7;
+  z-index: 12;
+}
+
+.archive__grid-corner--tl {
+  top: 6px;
+  left: 6px;
+  border-top: 1.5px solid currentColor;
+  border-left: 1.5px solid currentColor;
+}
+
+.archive__grid-corner--tr {
+  top: 6px;
+  right: 6px;
+  border-top: 1.5px solid currentColor;
+  border-right: 1.5px solid currentColor;
+}
+
+.archive__grid-corner--bl {
+  bottom: 6px;
+  left: 6px;
+  border-bottom: 1.5px solid currentColor;
+  border-left: 1.5px solid currentColor;
+}
+
+.archive__grid-corner--br {
+  bottom: 6px;
+  right: 6px;
+  border-bottom: 1.5px solid currentColor;
+  border-right: 1.5px solid currentColor;
+}
+
+/* Stage Navigation Click Zones (Left / Right) */
+.archive__wip-nav {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 45%;
+  border: none;
+  background: transparent;
+  outline: none;
+  cursor: pointer;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  transition: background 0.2s ease;
+}
+
+.archive__wip-nav--prev {
+  left: 0;
+  justify-content: flex-start;
+}
+
+.archive__wip-nav--next {
+  right: 0;
+  justify-content: flex-end;
+}
+
+.archive__wip-nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.archive__wip-nav:hover .archive__wip-nav-icon {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* --------------------------------------------------------------------------
+   Viewfinder Bottom Bar: Minimap & Caption
+   -------------------------------------------------------------------------- */
+.archive__viewfinder-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.archive__minimap-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 1/1 (or X/N) Minimap Counter */
+.archive__minimap-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: var(--archive-card-bg);
+  border: 1px solid var(--archive-border);
+  font-family: var(--archive-font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--archive-ink);
+  user-select: none;
+  letter-spacing: 0.04em;
+}
+
+.archive__minimap-num {
+  color: var(--archive-ink);
+}
+
+.archive__minimap-slash {
+  color: var(--archive-muted);
+  opacity: 0.6;
+}
+
+.archive__minimap-total {
+  color: var(--archive-muted);
+}
+
+/* Thumbnail / Slot Row with Progress Indicators */
+.archive__wip-thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.archive__wip-thumb {
+  appearance: none;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 32px;
+  padding: 0;
+  margin: 0;
+  transition: transform 0.15s ease;
+}
+
+.archive__wip-thumb:active {
+  transform: scale(0.95);
+}
+
+.archive__wip-thumb-box {
+  width: 32px;
+  height: 28px;
+  border-radius: 3px;
+  border: 1px solid var(--archive-border);
+  background: var(--archive-card-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--archive-font-mono);
+  font-size: 0.625rem;
+  font-weight: 500;
+  color: var(--archive-muted);
+  opacity: 0.55;
+  transition: opacity 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.archive__wip-thumb:hover .archive__wip-thumb-box,
+.archive__wip-thumb[aria-current="true"] .archive__wip-thumb-box {
+  opacity: 1;
+  border-color: var(--archive-ink);
+  color: var(--archive-ink);
+  font-weight: 600;
+}
+
+.archive__wip-thumb-bar {
   width: 100%;
   height: 2px;
-  background: var(--archive-border);
-  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 1px;
   overflow: hidden;
+  display: block;
 }
 
-.archive-thumb-fill {
-  position: absolute;
-  inset: 0;
-  background: var(--archive-text-primary);
+.dark .archive__wip-thumb-bar {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.archive__wip-thumb-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--archive-ink);
   transform-origin: left;
   transform: scaleX(0);
-  transition: transform 0.1s linear;
+  transition: transform 0.2s ease;
 }
 
-/* Date Switcher Pill Bar */
-.archive-entry-tabs {
-  display: flex;
+.archive__wip-thumb[aria-current="true"] .archive__wip-thumb-fill {
+  transform: scaleX(1);
+}
+
+/* Viewfinder Caption Text */
+.archive__viewfinder-caption {
+  width: 100%;
+}
+
+.archive__viewfinder-caption-text {
+  font-family: var(--archive-font-primary);
+  font-size: var(--archive-size-meta);
+  line-height: 1.3;
+  color: var(--archive-muted);
+  margin: 0;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+  text-wrap: balance;
+}
+
+/* --------------------------------------------------------------------------
+   Baduk Coordinate Register Markers
+   -------------------------------------------------------------------------- */
+.archive__baduk-mark {
+  display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  margin-bottom: 0.85rem;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.archive-entry-tabs::-webkit-scrollbar {
-  display: none;
-}
-
-.archive-entry-tab {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.2rem 0.55rem;
+  gap: 6px;
   font-family: var(--archive-font-mono);
-  font-size: 0.65rem;
-  border-radius: 9999px;
-  border: 1px solid var(--archive-border);
-  background: var(--archive-bg-panel);
-  color: var(--archive-text-muted);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.archive-entry-tab:hover {
-  color: var(--archive-text-primary);
-  border-color: var(--archive-text-primary);
-}
-
-.archive-entry-tab[data-active='true'] {
-  background: var(--archive-text-primary);
-  color: #ffffff;
-  border-color: var(--archive-text-primary);
-}
-
-.dark .archive-entry-tab[data-active='true'] {
-  color: #000000;
+  font-size: var(--archive-size-meta);
+  color: var(--archive-muted);
+  letter-spacing: 0.05em;
+  opacity: 0.75;
 }

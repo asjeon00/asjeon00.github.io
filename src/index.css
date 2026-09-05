@@ -131,3 +131,68 @@ html, body {
 ::-webkit-scrollbar-thumb:hover {
   background: #3f3f46;
 }
+
+/* --------------------------------------------------------------------------
+   Author Navigation Info Popover Card
+   Centered and in line with the bottom-right floating navbar
+   -------------------------------------------------------------------------- */
+.author-info-popover {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  width: 204px;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  border-radius: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 12px;
+  line-height: 1.55;
+  color: #262626;
+  user-select: none;
+  overflow-wrap: break-word;
+  word-break: normal;
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateX(-50%) translateY(0) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+:root.dark .author-info-popover,
+html.dark .author-info-popover {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(23, 23, 23, 0.88);
+  color: #e5e5e5;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+}
+
+.author-info-popover--hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(8px) scale(0.96);
+}
+
+@media (max-width: 1023px) {
+  .author-info-popover {
+    transform: translateX(calc(-50% - 16px)) translateY(0) scale(1);
+  }
+  .author-info-popover.author-info-popover--hidden {
+    transform: translateX(calc(-50% - 16px)) translateY(8px) scale(0.96);
+  }
+}
+
+@media (max-width: 639px) {
+  .author-info-popover {
+    width: 200px;
+    padding: 12px 14px;
+    transform: translateX(calc(-50% - 24px)) translateY(0) scale(1);
+  }
+  .author-info-popover.author-info-popover--hidden {
+    transform: translateX(calc(-50% - 24px)) translateY(8px) scale(0.96);
+  }
+}

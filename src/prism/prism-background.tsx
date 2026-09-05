@@ -20,7 +20,7 @@ import { DEFAULT_PRISM_CONTROLS, type PrismControls } from "./types";
 import type { PrismControlsUpdater } from "./debug/graph/control-context";
 import { preloadLightAssets } from "./pipelines/light/assets/preload";
 import { preloadPrismPipeline } from "./pipeline-controller";
-import { globalPaperController } from "./pipelines/light/passes/paper/paper-controller";
+import { globalBeadHoverController } from "./pipelines/light/passes/hover/bead-hover-controller";
 import { unprojectCanvasToBoardPlane } from "./pipelines/light/passes/paper/hit-test";
 
 const PrismDebugGraph = lazy(() =>
@@ -54,6 +54,7 @@ interface PrismBackgroundProps {
   readonly onCloseDebug?: () => void;
   readonly controls?: Partial<PrismControls>;
   readonly onRendererReady?: (renderer: PrismRenderer) => void;
+  readonly onOrbClick?: (orbIndex: number | null) => void;
 }
 
 export function PrismBackground({
@@ -62,6 +63,7 @@ export function PrismBackground({
   onCloseDebug,
   controls,
   onRendererReady,
+  onOrbClick,
 }: PrismBackgroundProps) {
   if (!enabled) return null;
   return (
@@ -70,6 +72,7 @@ export function PrismBackground({
       onCloseDebug={onCloseDebug}
       controlsProp={controls}
       onRendererReady={onRendererReady}
+      onOrbClick={onOrbClick}
     />
   );
 }
@@ -79,11 +82,13 @@ function PrismCanvas({
   onCloseDebug,
   controlsProp,
   onRendererReady,
+  onOrbClick,
 }: {
   debug?: boolean;
   onCloseDebug?: () => void;
   controlsProp?: Partial<PrismControls>;
   onRendererReady?: (renderer: PrismRenderer) => void;
+  onOrbClick?: (orbIndex: number | null) => void;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rendererRef = useRef<PrismRenderer | null>(null);
@@ -311,30 +316,109 @@ function PrismCanvas({
     };
   }, [activateMode, reportError, debug, onRendererReady]);
 
-  const handlePointerMove = useCallback((e: React.PointerEvent<HTMLCanvasElement>) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const pt = unprojectCanvasToBoardPlane(e.clientX, e.clientY, canvas);
-    if (pt) {
-      const isHit = globalPaperController.isInteractiveHit(pt[0], pt[1]);
-      canvas.style.cursor = isHit ? "pointer" : "default";
-    } else {
-      canvas.style.cursor = "default";
-    }
-  }, []);
+  // Global pointer tracking ensures bead hover and click triggers accurately across the viewport
+  useEffect(() => {
+    const handleGlobalPointerMove = (e: PointerEvent) => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
 
-  const handlePointerDown = useCallback((e: React.PointerEvent<HTMLCanvasElement>) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const pt = unprojectCanvasToBoardPlane(e.clientX, e.clientY, canvas);
-    if (pt) {
-      const isHit = globalPaperController.isInteractiveHit(pt[0], pt[1]);
-      if (isHit) {
-        globalPaperController.toggle();
-        rendererRef.current?.setControls?.(controlsRef.current);
+      const target = e.target as HTMLElement | null;
+      if (
+        target &&
+        target.closest(
+          'button, a, input, select, textarea, [role="button"], [role="tab"], .archive__wip-nav, .archive__wip-thumb, .archive__header-actions, .archive__back-btn'
+        )
+      ) {
+        globalBeadHoverController.onPointerLeave();
+        canvas.style.cursor = "default";
+        if (document.body.style.cursor === "pointer") {
+          document.body.style.cursor = "default";
+        }
+        rendererRef.current?.invalidate?.();
+        return;
       }
-    }
-  }, []);
+
+      const renderer = rendererRef.current;
+      const pt = renderer?.unprojectToBoardPlane
+        ? renderer.unprojectToBoardPlane(e.clientX, e.clientY)
+        : unprojectCanvasToBoardPlane(e.clientX, e.clientY, canvas);
+
+      if (pt) {
+        const hoveredBead = globalBeadHoverController.onPointerMove(pt[0], pt[1]);
+        const isInteractive = hoveredBead !== null;
+
+        canvas.style.cursor = isInteractive ? "pointer" : "default";
+        if (isInteractive) {
+          document.body.style.cursor = "pointer";
+        } else if (document.body.style.cursor === "pointer") {
+          document.body.style.cursor = "default";
+        }
+
+        renderer?.invalidate?.();
+      } else {
+        globalBeadHoverController.onPointerLeave();
+        canvas.style.cursor = "default";
+        if (document.body.style.cursor === "pointer") {
+          document.body.style.cursor = "default";
+        }
+        renderer?.invalidate?.();
+      }
+    };
+
+    const handleGlobalPointerLeave = () => {
+      globalBeadHoverController.onPointerLeave();
+      const canvas = canvasRef.current;
+      if (canvas) canvas.style.cursor = "default";
+      if (document.body.style.cursor === "pointer") {
+        document.body.style.cursor = "default";
+      }
+      rendererRef.current?.invalidate?.();
+    };
+
+    const handleGlobalPointerDown = (e: PointerEvent) => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+
+      const target = e.target as HTMLElement | null;
+      if (
+        target &&
+        target.closest(
+          'button, a, input, select, textarea, [role="button"], [role="tab"], .archive__wip-nav, .archive__wip-thumb, .archive__header-actions, .archive__back-btn'
+        )
+      ) {
+        return;
+      }
+
+      const renderer = rendererRef.current;
+      const pt = renderer?.unprojectToBoardPlane
+        ? renderer.unprojectToBoardPlane(e.clientX, e.clientY)
+        : unprojectCanvasToBoardPlane(e.clientX, e.clientY, canvas);
+
+      if (pt) {
+        const clickResult = globalBeadHoverController.onPointerDown(pt[0], pt[1]);
+        if (clickResult !== null && clickResult.changed) {
+          const newActive = globalBeadHoverController.getActiveBeadIndex();
+          onOrbClick?.(newActive);
+          renderer?.invalidate?.();
+        }
+      }
+    };
+
+    window.addEventListener("pointermove", handleGlobalPointerMove, { passive: true });
+    window.addEventListener("pointerdown", handleGlobalPointerDown);
+    window.addEventListener("blur", handleGlobalPointerLeave);
+    document.addEventListener("mouseleave", handleGlobalPointerLeave);
+
+    return () => {
+      window.removeEventListener("pointermove", handleGlobalPointerMove);
+      window.removeEventListener("pointerdown", handleGlobalPointerDown);
+      window.removeEventListener("blur", handleGlobalPointerLeave);
+      document.removeEventListener("mouseleave", handleGlobalPointerLeave);
+      if (document.body.style.cursor === "pointer") {
+        document.body.style.cursor = "default";
+      }
+    };
+  }, [onOrbClick]);
 
   return (
     <div
@@ -345,8 +429,6 @@ function PrismCanvas({
       <canvas
         ref={canvasRef}
         aria-hidden="true"
-        onPointerMove={handlePointerMove}
-        onPointerDown={handlePointerDown}
         className="block h-full w-full touch-none"
       />
       {showDebug ? (

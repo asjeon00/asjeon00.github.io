@@ -19,6 +19,8 @@ export interface LightPipelineGraph {
   paper?: Draw;
   paperShadow?: Draw;
   paperGeometry?: Geometry;
+  glassHover?: Draw;
+  beadAtlas?: import("./passes/hover/bead-atlas").BeadAtlas;
   wireframe?: Draw;
   lightWireframe?: Draw;
   readonly present: Effect;

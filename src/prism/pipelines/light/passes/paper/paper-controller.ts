@@ -25,15 +25,18 @@ export class PaperController {
   private animDuration = 1200; // ms
   private controls: PaperControls = { ...DEFAULT_PAPER_CONTROLS };
 
-  // 5 Gomoku bead positions on the Baduk board
+  // 8 Baduk glass bead positions (3x3 grid centered at Tengen, with bottom-right omitted)
   private readonly dx = GO_GRID_SPACING;
   private readonly dy = GO_GRID_SPACING * GO_CELL_ASPECT;
   private readonly beadCenters: readonly [number, number][] = [
-    [0, 0],              // Central Tengen
-    [this.dx, 0],        // Right
-    [-this.dx, 0],       // Left
-    [0, this.dy],        // Top
-    [this.dx, this.dy],  // Top-Right
+    [-this.dx, this.dy],   // 0: Top-Left (blsclone - 1/24/26)
+    [0, this.dy],          // 1: Top-Center (yukon - 2/22/2026)
+    [this.dx, this.dy],    // 2: Top-Right (halfpast*noon - 2/24/26)
+    [-this.dx, 0],         // 3: Middle-Left (kodak - 3/28/2026)
+    [0, 0],                // 4: Center Tengen (newjeans - 4/27/2026)
+    [this.dx, 0],          // 5: Middle-Right (bside - 6/16/2026)
+    [-this.dx, -this.dy],  // 6: Bottom-Left (Aedena - 6/27/2026)
+    [0, -this.dy],         // 7: Bottom-Center (pawchart - 7/2/2026)
   ];
   private readonly hitRadius = GLASS_ORB_RADIUS * 1.35;
 
@@ -55,6 +58,14 @@ export class PaperController {
 
   public isVisible(): boolean {
     return this.progress > 0.001;
+  }
+
+  public reset(): void {
+    this.state = "hidden";
+    this.progress = 0.0;
+    this.animStartTime = 0;
+    this.animStartProgress = 0.0;
+    this.animTargetProgress = 0.0;
   }
 
   /**
@@ -87,10 +98,7 @@ export class PaperController {
   }
 
   public isInteractiveHit(worldX: number, worldY: number): boolean {
-    return (
-      this.isBeadHit(worldX, worldY) ||
-      (this.state === "settled" && this.isPaperHit(worldX, worldY))
-    );
+    return this.state === "settled" && this.isPaperHit(worldX, worldY);
   }
 
   public toggle(now: number = performance.now()): boolean {

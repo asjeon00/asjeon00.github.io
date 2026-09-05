@@ -1,4 +1,2 @@
-export { ArchiveView } from './archive-view';
-export { useBadukGrid } from './use-baduk-grid';
-export { MEEDEE_ARCHIVE } from './archive-data';
-export * from './types';
+export { ArchiveTypography, type ArchiveTypographyProps } from "./archive-typography";
+export { PROJECTS_DATA, type ProjectData, type ProjectImage } from "./archive-data";

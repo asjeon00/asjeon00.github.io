@@ -1,0 +1,3 @@
+4/27/2026
+
+NewJeans is a concept site for the k-pop group, NewJeans. Based on the group's other web experiences that blend user interaction into the group's identity, I attempted to create a website that resembled other artists websites while trying to incorporate interaactions that feel nostalgic of older interfaces. Layering and texturing are used to evoke a physicality to the website to help it feel less digital and more like a collection of physical media. 

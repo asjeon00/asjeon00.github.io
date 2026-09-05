@@ -1,0 +1,31 @@
+/* ==========================================================================
+   About Modal Animations and Styles
+   ========================================================================== */
+
+@keyframes aboutModalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes aboutModalCardIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.about-modal-backdrop {
+  animation: aboutModalFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.about-modal-card {
+  animation: aboutModalCardIn 0.26s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

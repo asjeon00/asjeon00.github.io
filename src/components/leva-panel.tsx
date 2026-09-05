@@ -10,6 +10,7 @@ import {
   CAMERA_FOV_DEGREES,
 } from '../prism/types'
 import { globalPaperController } from '../prism/pipelines/light/passes/paper/paper-controller'
+import { globalBeadHoverController } from '../prism/pipelines/light/passes/hover/bead-hover-controller'
 
 export interface PrismLevaPanelProps {
   readonly onControlsChange: (controls: Partial<PrismControls>) => void
@@ -144,6 +145,41 @@ export function PrismLevaPanel({ onControlsChange, isVisible = true }: PrismLeva
         step: 0.005,
         label: 'Slide Wave Curl',
         onChange: (v) => globalPaperController.setControls({ waveCurl: v }),
+      },
+    }),
+
+    '🔮 Glass Bead Hover (CH-Projects)': folder({
+      hoverFisheye: {
+        value: 1.35,
+        min: 0.5,
+        max: 2.5,
+        step: 0.05,
+        label: 'Fisheye Distortion',
+        onChange: (v) => globalBeadHoverController.setConfig({ fisheyeStrength: v }),
+      },
+      hoverParallax: {
+        value: 0.18,
+        min: 0.0,
+        max: 0.45,
+        step: 0.01,
+        label: 'Cursor Parallax',
+        onChange: (v) => globalBeadHoverController.setConfig({ parallaxStrength: v }),
+      },
+      hoverSmoosh: {
+        value: 1.0,
+        min: 0.5,
+        max: 1.8,
+        step: 0.05,
+        label: 'Smoosh Aperture',
+        onChange: (v) => globalBeadHoverController.setConfig({ smooshPower: v }),
+      },
+      hoverDuration: {
+        value: 380,
+        min: 150,
+        max: 800,
+        step: 10,
+        label: 'Fade Duration (ms)',
+        onChange: (v) => globalBeadHoverController.setConfig({ transitionDurationMs: v }),
       },
     }),
 

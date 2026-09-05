@@ -44,8 +44,10 @@ import {
 } from "./runtime/state";
 import type { PrismRuntime } from "./runtime/types";
 import type { PrismThumbnailOptions } from "./thumbnail";
-import { DEFAULT_PRISM_CONTROLS, type PrismControls } from "./types";
+import { DEFAULT_PRISM_CONTROLS, CAMERA_PITCH_DEGREES, type PrismControls } from "./types";
 import { globalPaperController } from "./pipelines/light/passes/paper/paper-controller";
+import { globalBeadHoverController } from "./pipelines/light/passes/hover/bead-hover-controller";
+import { unprojectCanvasToBoardPlane } from "./pipelines/light/passes/paper/hit-test";
 import type {
   PrismPerformanceReport,
   PrismPerformanceRunOptions,
@@ -56,6 +58,10 @@ import type {
   PrismAutoQualityControllerOptions,
   PrismQualityLogger,
 } from "./performance/auto-quality";
+import type {
+  LightPipelineOptions,
+  LightPrismPipeline,
+} from "./pipelines/light";
 
 export type { PrismThumbnailOptions } from "./thumbnail";
 
@@ -69,12 +75,6 @@ export async function renderThumbnail(
   return thumbnail.renderThumbnail(gpu, output, options);
 }
 
-export interface BadukGridMetrics {
-  columns: number[];
-  rows: number[];
-  bounds: { left: number; top: number; right: number; bottom: number; width: number; height: number };
-}
-
 export interface PrismRenderer extends ExampleRenderer<PrismControls> {
   /** Stable bridge identity; GPU-backed previews can replace its internals. */
   readonly debugBridge: PrismDebugPreviewBridge;
@@ -83,8 +83,8 @@ export interface PrismRenderer extends ExampleRenderer<PrismControls> {
   subscribeQuality(listener: (state: PrismQualityState) => void): () => void;
   setMode(mode: PrismPipelineMode): Promise<void>;
   setQualityPreference(preference: PrismQualityPreference): Promise<void>;
-  getBadukGridMetrics?(): BadukGridMetrics | null;
-  setCameraOrbitEnabled?(enabled: boolean): void;
+  getCameraDistance?(): number;
+  unprojectToBoardPlane?(clientX: number, clientY: number): readonly [number, number] | null;
   /** Available only when the renderer was created for `?prism-perf`. */
   measurePerformance(
     options?: PrismPerformanceRunOptions
@@ -489,9 +489,10 @@ export function createRenderer(
     const paperAnimating =
       globalPaperController.getState() === "sliding-in" ||
       globalPaperController.getState() === "sliding-out";
+    const beadHoverAnimating = globalBeadHoverController.isAnimating();
     const updateScene = performanceFrame
       ? performanceFrame.updateScene
-      : !!aim || !!orbit || pendingPresent || beamRevealChanged || windAnimating || paperAnimating;
+      : !!aim || !!orbit || pendingPresent || beamRevealChanged || windAnimating || paperAnimating || beadHoverAnimating;
     const dustTime =
       performanceFrame?.dustTime ??
       (gpuClock ? Math.floor(gpuClock.time * DUST_FPS) / DUST_FPS : 0);
@@ -946,67 +947,27 @@ export function createRenderer(
     setControls(next) {
       if (disposed) return;
       controls = { ...next };
-      if (next.cameraOrbitEnabled !== undefined) {
-        interaction.setOrbitEnabled(Boolean(next.cameraOrbitEnabled));
-      }
       pendingPresent = true;
       if (runtime) setRuntimeControls(runtime, controls);
       debugHost?.invalidate();
     },
-    setCameraOrbitEnabled(enabled: boolean) {
-      interaction.setOrbitEnabled(enabled);
-      pendingPresent = true;
-    },
-    getBadukGridMetrics() {
-      if (disposed || !runtime || !options.canvas) return null;
-      const rect = options.canvas.getBoundingClientRect();
-      const vp = runtime.view.viewProjection;
-      const gridSpacing = controls.gradient?.gridSpacing ?? 0.39;
-      const cellAspect = 1.07;
-      const boardOffsetX = controls.gradient?.boardOffsetX ?? 0.0;
-
-      const columns: number[] = [];
-      const rows: number[] = [];
-
-      for (let i = -9; i <= 9; i++) {
-        const wx = i * gridSpacing + boardOffsetX;
-        const wy = 0;
-        const cx = vp[0] * wx + vp[4] * wy + vp[12];
-        const cw = vp[3] * wx + vp[7] * wy + vp[15];
-        const ndcX = Math.abs(cw) > 1e-5 ? cx / cw : 0;
-        columns.push(rect.left + (ndcX * 0.5 + 0.5) * rect.width);
-      }
-
-      for (let j = 9; j >= -9; j--) {
-        const wx = boardOffsetX;
-        const wy = j * (gridSpacing * cellAspect);
-        const cy = vp[1] * wx + vp[5] * wy + vp[13];
-        const cw = vp[3] * wx + vp[7] * wy + vp[15];
-        const ndcY = Math.abs(cw) > 1e-5 ? cy / cw : 0;
-        rows.push(rect.top + (1.0 - (ndcY * 0.5 + 0.5)) * rect.height);
-      }
-
-      const left = columns[0] ?? 0;
-      const right = columns[columns.length - 1] ?? rect.width;
-      const top = rows[0] ?? 0;
-      const bottom = rows[rows.length - 1] ?? rect.height;
-
-      return {
-        columns,
-        rows,
-        bounds: {
-          left,
-          top,
-          right,
-          bottom,
-          width: right - left,
-          height: bottom - top,
-        },
-      };
-    },
     invalidate() {
       pendingPresent = true;
       debugHost?.invalidate();
+    },
+    getCameraDistance() {
+      return runtime?.cameraDistance ?? 5.15;
+    },
+    unprojectToBoardPlane(clientX: number, clientY: number): readonly [number, number] | null {
+      if (!runtime) return null;
+      return unprojectCanvasToBoardPlane(
+        clientX,
+        clientY,
+        options.canvas,
+        runtime.cameraDistance,
+        runtime.controls.cameraPitch ?? CAMERA_PITCH_DEGREES,
+        runtime.controls.cameraFov
+      );
     },
     resize,
     dispose,

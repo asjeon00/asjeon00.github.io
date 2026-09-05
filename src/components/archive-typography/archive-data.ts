@@ -1,178 +1,231 @@
-import type { ArchiveProject } from './types';
+export interface ProjectImage {
+  url: string;
+  label: string;
+  aspectRatio?: string;
+}
 
-export const MEEDEE_ARCHIVE: ArchiveProject = {
-  title: 'meedee',
-  year: '2026',
-  status: 'Work in progress',
-  wipTag: 'WIP',
-  subtitle: 'Personal MIDI & Hardware Exploration',
-  author: 'Glauber',
-  location: 'Los Angeles, CA',
-  entries: [
-    {
-      id: '2026-08-18',
-      date: '2026-08-18',
-      formattedDate: 'August 18, 2026',
-      title: 'Housing & 3D Printing Iterations',
-      category: 'Enclosure · CAD',
-      text: [
-        'It’s taking me a few days to figure out the details of the bottom part of the housing. This is a very slow process. Each iteration takes a lot of time, between CAD and 3D printing. Printing has taken around 1h–1h30, and that’s only when I notice whether something worked or not.',
-        'This led me to make custom connectors with more flexible wires as well. It was very difficult to compress the components with the cables I bought previously. I really wanted to stay away from the square shape, but honestly, it’s just easier if I move on with a basic enclosure and learn more things during the process.',
-      ],
-      specs: [
-        { label: 'Print Time', value: '1h 24m / slice' },
-        { label: 'Material', value: 'Matte PLA · 0.16mm' },
-        { label: 'Tolerance', value: '±0.15mm snap fit' },
-        { label: 'Connectors', value: 'Custom JST-SH 1.0mm' },
-      ],
-      assets: [
-        {
-          id: 'asset-08-18-1',
-          type: 'image',
-          url: 'https://glauber.b-cdn.net/meedee/2026-08-18-2_20260818032131.jpg',
-          alt: 'Enclosure base CAD alignment and 3D print test',
-          width: 2000,
-          height: 2000,
-          caption: 'Iteration 04 · Bottom shell snap-fit clearance',
-        },
-        {
-          id: 'asset-08-18-2',
-          type: 'image',
-          url: 'https://glauber.b-cdn.net/meedee/2026-08-18-3_20260818032132.jpg',
-          alt: 'Internal component mounting assembly',
-          width: 2000,
-          height: 2000,
-          caption: 'Internal cavity routing with flexible silicone wire',
-        },
-        {
-          id: 'asset-08-18-3',
-          type: 'image',
-          url: 'https://glauber.b-cdn.net/meedee/2026-08-18-7_20260818032139.jpg',
-          alt: 'Flexible wiring connectors',
-          width: 2000,
-          height: 2000,
-          caption: 'Custom micro-connectors for compact chassis depth',
-        },
-        {
-          id: 'asset-08-18-4',
-          type: 'image',
-          url: 'https://glauber.b-cdn.net/meedee/2026-08-18-6_20260818032137.jpg',
-          alt: 'Enclosure top plate mockup',
-          width: 2000,
-          height: 2000,
-          caption: 'Top bezel edge beveling and switch port',
-        },
-      ],
+export interface ProjectData {
+  id: string;
+  beadIndex: number;
+  title: string;
+  link: string;
+  subtitle?: string;
+  date: string;
+  year?: string;
+  passage: string;
+  badukCoord: {
+    row: number;
+    col: number;
+    label: string;
+  };
+  tags: string[];
+  images: ProjectImage[];
+}
+
+/**
+ * 8 Projects arranged strictly in chronological order by date:
+ * Oldest (Top-Left) to Most Recent (Bottom):
+ * 0: BLS Clone       (1/24/26)    [-dx, dy]  Top-Left
+ * 1: Yukon           (2/22/2026)  [0, dy]    Top-Center
+ * 2: halfpast*noon   (2/24/26)    [dx, dy]   Top-Right
+ * 3: Kodak           (3/28/2026)  [-dx, 0]   Middle-Left
+ * 4: NewJeans        (4/27/2026)  [0, 0]     Center Tengen
+ * 5: B-Side          (6/16/2026)  [dx, 0]    Middle-Right
+ * 6: Aedena          (6/27/2026)  [-dx, -dy] Bottom-Left
+ * 7: PawChart        (7/2/2026)   [0, -dy]   Bottom-Center
+ */
+export const PROJECTS_DATA: ProjectData[] = [
+  {
+    id: "blsclone",
+    beadIndex: 0,
+    title: "BLS Clone",
+    link: "https://asjeon.vercel.app/blsclone",
+    date: "1/24/26",
+    passage: "BLSclone is a clone of Blacklead studio's previous portfolio page. As part of a challenge to reverse engineer and recreate the techniques used in the website, the project was completed within a session and served as my first experience working with 3D.",
+    badukCoord: {
+      row: 16,
+      col: 4,
+      label: "row 16 · col 4",
     },
-    {
-      id: '2026-08-12',
-      date: '2026-08-12',
-      formattedDate: 'August 12, 2026',
-      title: 'First Board Assembly & Boot',
-      category: 'Hardware · Assembly',
-      text: [
-        'Days after receiving the board and waiting for other things to align, I could finally assemble and test Meedee 1. I’m still flying in my head to think that I have a custom PCB that existed based on a breadboard prototype and very soon will look like a finished product.',
-        'There were no errors of any kind when booting the board for the first time. Claude was incredibly helpful in each step and even warned me about JST connectors having switched wires that would damage the board. Had to make sure the LiPo battery wires landed on the right pins.',
-      ],
-      specs: [
-        { label: 'Compute', value: 'Raspberry Pi CM4 Lite' },
-        { label: 'Power', value: '3.7V LiPo · TP4056 IC' },
-        { label: 'Boot Time', value: '4.2s to MIDI ready' },
-        { label: 'Logic Level', value: '3.3V UART / I2C' },
-      ],
-      assets: [
-        {
-          id: 'asset-08-12-1',
-          type: 'image',
-          url: 'https://glauber.b-cdn.net/meedee/img-0177_20260812191037.jpg',
-          alt: 'Meedee 1 assembled PCB prototype on desk',
-          width: 3024,
-          height: 4032,
-          caption: 'Meedee Rev 1.0 assembled board boot verification',
-        },
-        {
-          id: 'asset-08-12-2',
-          type: 'image',
-          url: 'https://glauber.b-cdn.net/meedee/poster_20260812191257.jpg',
-          alt: 'OLED screen initial interface test',
-          width: 2160,
-          height: 3840,
-          caption: 'TFT graphical readout: MIDI track buffer 01',
-        },
-      ],
+    tags: ["3D Experience", "WebGL", "Reverse Engineering", "Portfolio"],
+    images: [
+      {
+        url: "/projects/blsclone/blsclone.png",
+        label: "Fluid Physics Simulation & Spatial Geometry",
+        aspectRatio: "16 / 10",
+      },
+    ],
+  },
+  {
+    id: "yukon",
+    beadIndex: 1,
+    title: "Yukon",
+    link: "https://asjeon.vercel.app/yukon",
+    date: "2/22/2026",
+    passage: "Yukon is another artist page made for the artist Johnny Yukon, inspired by the heavy emphasis on visual imagery with references to movies and other music videos in his work. The website intends to improve on the design of the original website that was both static and lacked an effective method of presenting his music in a way that is accessible and engaging.",
+    badukCoord: {
+      row: 16,
+      col: 10,
+      label: "row 16 · col 10",
     },
-    {
-      id: '2026-08-05',
-      date: '2026-08-05',
-      formattedDate: 'August 5, 2026',
-      title: 'PCB Delivery & CM4 High-Density Connector',
-      category: 'Fabrication · Delivery',
-      text: [
-        'The PCB finally arrived! Amazing quality. I was really concerned about the Raspberry CM4 not fitting in, as it has high-density micro strips that connect with the meedee board. If that failed, nothing would work. But it’s seating perfectly there.',
-        'It’s amazing to think that this started as a bet with Claude Code and so far, things seem great. Now, it’s time to test. Fingers crossed!',
-      ],
-      specs: [
-        { label: 'Layers', value: '4-layer FR4 · ENIG Gold' },
-        { label: 'Dimensions', value: '55mm × 40mm' },
-        { label: 'Connector', value: 'Hirose DF40 100-pin' },
-        { label: 'Thickness', value: '1.2mm board profile' },
-      ],
-      assets: [
-        {
-          id: 'asset-08-05-1',
-          type: 'image',
-          url: 'https://glauber.b-cdn.net/meedee/2026-08-04-2_20260805002741.jpg',
-          alt: 'Close-up macro of ENIG gold contacts and traces',
-          width: 2000,
-          height: 2667,
-          caption: 'ENIG finish and Hirose DF40 socket mating',
-        },
-        {
-          id: 'asset-08-05-2',
-          type: 'image',
-          url: 'https://glauber.b-cdn.net/meedee/2026-08-04-4_20260805013249.jpg',
-          alt: 'Overhead view of fabricated 4-layer PCB',
-          width: 3000,
-          height: 3000,
-          caption: 'Top copper layer with silkscreen typography',
-        },
-      ],
+    tags: ["Artist Website", "Music Experience", "Visual Media", "Engaging UI"],
+    images: [
+      {
+        url: "/projects/yukon/yukon.png",
+        label: "Harmonic Layout System & Spatial Surface",
+        aspectRatio: "16 / 10",
+      },
+    ],
+  },
+  {
+    id: "halfpastnoon",
+    beadIndex: 2,
+    title: "halfpast*noon",
+    link: "https://halfpastnoon.framer.website/",
+    date: "2/24/26",
+    passage: "halfpast*noon is an online based publication centered around thoughtful dialogue about the NBA. These designs were created as part of specwork for a possible redesign of the website taking into account its place as an online magazine.",
+    badukCoord: {
+      row: 16,
+      col: 16,
+      label: "row 16 · col 16",
     },
-    {
-      id: '2026-07-15',
-      date: '2026-07-15',
-      formattedDate: 'July 15, 2026',
-      title: 'KiCad Hi-Fi 3D PCB Renders',
-      category: 'Design · EDA',
-      text: [
-        'I didn’t know KiCad could generate hi-fi 3D models of the PCBs. Really cool to be able to see so many details of something no one would ever see. Love this! While I wait, here are some cool cheap renderings of a blown-up PCB.',
-      ],
-      specs: [
-        { label: 'CAD Tool', value: 'KiCad 8.0 + FreeRouting' },
-        { label: 'Trace Width', value: '0.15mm signal / 0.4mm pwr' },
-        { label: 'Via Size', value: '0.45mm pad / 0.2mm drill' },
-        { label: 'Render Engine', value: 'Raytraced ambient occlusion' },
-      ],
-      assets: [
-        {
-          id: 'asset-07-15-1',
-          type: 'image',
-          url: 'https://glauber.b-cdn.net/meedee/render15_20260715074412.jpg',
-          alt: 'KiCad 3D render isometric angle',
-          width: 2000,
-          height: 2000,
-          caption: 'Blown-up view of surface-mount passives',
-        },
-        {
-          id: 'asset-07-15-2',
-          type: 'image',
-          url: 'https://glauber.b-cdn.net/meedee/render20_20260715074412.jpg',
-          alt: 'KiCad 3D render orthogonal trace topology',
-          width: 2000,
-          height: 2000,
-          caption: 'Orthogonal routing density through differential pairs',
-        },
-      ],
+    tags: ["Online Publication", "Editorial Specwork", "Magazine", "NBA Dialogue"],
+    images: [
+      {
+        url: "/projects/halfpastnoon/thumbnail.png",
+        label: "Plate I · Cover & High-Noon Shadow Cast",
+        aspectRatio: "16 / 10",
+      },
+      {
+        url: "/projects/halfpastnoon/hpn1.png",
+        label: "Plate II · Monolithic Facade & Solar Zenith Angle",
+        aspectRatio: "16 / 10",
+      },
+      {
+        url: "/projects/halfpastnoon/hpn2.png",
+        label: "Plate III · Typographic Grid Register & Detail Study",
+        aspectRatio: "16 / 10",
+      },
+      {
+        url: "/projects/halfpastnoon/hpn4.png",
+        label: "Plate IV · Contrast Shading & Structural Mass",
+        aspectRatio: "16 / 10",
+      },
+    ],
+  },
+  {
+    id: "kodak",
+    beadIndex: 3,
+    title: "Kodak",
+    link: "https://asjeon.vercel.app/kodak",
+    date: "3/28/2026",
+    passage: "Kodak is a mock e-commerce site for Kodak apparel, a sub-brand of Kodak that sells vintage and retro-inspired clothing and accessories that is popular in Korea but otherwise no well known globally. The main inspiration for this design was the strong branding exercises seen in Korean indie clothing stores. The design attempts to translate the tactile experience of film photography combining the legacy of Kodak as a film company into a digital interface and accessible consumer product through the use of unique animations and layouts.",
+    badukCoord: {
+      row: 10,
+      col: 4,
+      label: "row 10 · col 4",
     },
-  ],
-};
+    tags: ["E-Commerce", "Branding", "Tactile UI", "Film Photography"],
+    images: [
+      {
+        url: "/projects/kodak/kodak.png",
+        label: "Spectral Halation & Photochemical Emulsion",
+        aspectRatio: "16 / 10",
+      },
+    ],
+  },
+  {
+    id: "newjeans",
+    beadIndex: 4,
+    title: "NewJeans",
+    link: "https://asjeon.vercel.app/NewJeans",
+    date: "4/27/2026",
+    passage: "NewJeans is a concept site for the k-pop group, NewJeans. Based on the group's other web experiences that blend user interaction into the group's identity, I attempted to create a website that resembled other artists websites while trying to incorporate interaactions that feel nostalgic of older interfaces. Layering and texturing are used to evoke a physicality to the website to help it feel less digital and more like a collection of physical media.",
+    badukCoord: {
+      row: 10,
+      col: 10,
+      label: "row 10 · col 10 (Tengen)",
+    },
+    tags: ["Concept Site", "Physicality", "Y2K Nostalgia", "Layered Media"],
+    images: [
+      {
+        url: "/projects/newjeans/newjeans.png",
+        label: "Collage Interface & Kinetic Pop Identity",
+        aspectRatio: "16 / 10",
+      },
+    ],
+  },
+  {
+    id: "bside",
+    beadIndex: 5,
+    title: "B-Side",
+    link: "https://bsiderecords.framer.website/",
+    date: "6/16/2026",
+    passage: "B-side records is a concept store completed as a design challenge for the Framer Agents hackathon. The interactive components like the grid were iterated on in an attempt to create a unique and engaging user experience that sets it apart from typical e-commerce sites. Design was heavily inspired by the editorial layouts of magazines and completed within 24 hours.",
+    badukCoord: {
+      row: 10,
+      col: 16,
+      label: "row 10 · col 16",
+    },
+    tags: ["Concept Store", "Framer Hackathon", "Magazine Editorial", "Grid UI"],
+    images: [
+      {
+        url: "/projects/bside/image.png",
+        label: "Acoustic Waveform Modulator & Refraction Stage",
+        aspectRatio: "16 / 10",
+      },
+    ],
+  },
+  {
+    id: "Aedena",
+    beadIndex: 6,
+    title: "Aedena",
+    link: "https://moebius-desert.vercel.app/",
+    date: "6/27/2026",
+    passage: "Aedena is based on the work of Moebius, a famous French sci-fi illustrator. Completed as part of Threejs Journey's 24th Challenge - Stylized Nature.",
+    badukCoord: {
+      row: 4,
+      col: 4,
+      label: "row 4 · col 4",
+    },
+    tags: ["Three.js", "Stylized Nature", "Moebius", "Challenge 24"],
+    images: [
+      {
+        url: "/projects/Aedena/thumbnail.png",
+        label: "Plate I · Desert Monolith & Horizon Overview",
+        aspectRatio: "16 / 10",
+      },
+      {
+        url: "/projects/Aedena/image.png",
+        label: "Plate II · Crystalline Architecture & Mineral Geometries",
+        aspectRatio: "16 / 10",
+      },
+    ],
+  },
+  {
+    id: "pawchart",
+    beadIndex: 7,
+    title: "PawChart",
+    link: "https://pawchart.framer.website/",
+    date: "7/2/2026",
+    passage: "PawChart is a University of Pennsylvania-based startup centered around providing accesible information to both pet owners and vets. I was hire to redesign the product website in preparation for their launch. Implementation completed within Framer.",
+    badukCoord: {
+      row: 4,
+      col: 10,
+      label: "row 4 · col 10",
+    },
+    tags: ["Penn Startup", "Framer", "Product Redesign", "Vet Tech"],
+    images: [
+      {
+        url: "/projects/pawchart/thumbnail.png",
+        label: "Plate I · Clinical Telemetry Dashboard & Patient Monitor",
+        aspectRatio: "16 / 10",
+      },
+      {
+        url: "/projects/pawchart/image2.png",
+        label: "Plate II · Real-Time Waveform Vectors & Diagnostic Analytics",
+        aspectRatio: "16 / 10",
+      },
+    ],
+  },
+];

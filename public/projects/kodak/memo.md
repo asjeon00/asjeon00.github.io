@@ -1,0 +1,3 @@
+3/28/2026
+
+Kodak is a mock e-commerce site for Kodak apparel, a sub-brand of Kodak that sells vintage and retro-inspired clothing and accessories that is popular in Korea but otherwise no well known globally. The main inspiration for this design was the strong branding exercises seen in Korean indie clothing stores. The design attempts to translate the tactile experience of film photography combining the legacy of Kodak as a film company into a digital interface and accessible consumer product through the use of unique animations and layouts.

@@ -12,6 +12,7 @@ import wallLowWgsl from "./passes/wall/wall-low.wgsl";
 import wallWgsl from "./passes/wall/wall.wgsl";
 import paperWgsl from "./passes/paper/paper.wgsl";
 import paperShadowWgsl from "./passes/paper/paper-shadow.wgsl";
+import glassHoverWgsl from "./passes/hover/glass-hover.wgsl";
 import { createPaperGeometry } from "./passes/paper/paper-mesh";
 import { ensurePrismWireframeGeometry } from "../../runtime/resources";
 import type { PrismRuntime } from "../../runtime/types";
@@ -97,6 +98,14 @@ export function createLightGraph(
       cull: "back",
       depth: false,
       label: `${label}.light.glass-front`,
+    }),
+    glassHover: draw(gpu, {
+      shader: glassHoverWgsl,
+      geometry: runtime.prism,
+      cull: "back",
+      depth: false,
+      blend: "premultiplied",
+      label: `${label}.light.glass-hover`,
     }),
     glassAccent: draw(gpu, {
       shader: glassAccentWgsl,
