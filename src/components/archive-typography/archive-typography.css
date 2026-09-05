@@ -1,0 +1,343 @@
+/* Typography & Typesetting System matching glauber.org/archive/meedee */
+
+:root {
+  --archive-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --archive-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --archive-size-display: clamp(1.85rem, 1.6rem + 0.9vw, 2.4rem);
+  --archive-size-title: clamp(1.2rem, 1.05rem + 0.5vw, 1.5rem);
+  --archive-size-label: 0.8125rem;
+  --archive-size-body: 0.875rem;
+  --archive-size-meta: 0.6875rem;
+  --archive-size-code: 0.75rem;
+
+  --archive-text-primary: rgba(18, 18, 18, 0.92);
+  --archive-text-secondary: rgba(18, 18, 18, 0.65);
+  --archive-text-muted: rgba(18, 18, 18, 0.42);
+  --archive-border: rgba(0, 0, 0, 0.12);
+  --archive-bg-panel: rgba(255, 255, 255, 0.65);
+}
+
+.dark {
+  --archive-text-primary: rgba(245, 245, 245, 0.92);
+  --archive-text-secondary: rgba(245, 245, 245, 0.65);
+  --archive-text-muted: rgba(245, 245, 245, 0.42);
+  --archive-border: rgba(255, 255, 255, 0.14);
+  --archive-bg-panel: rgba(15, 15, 15, 0.65);
+}
+
+/* Glass & Vignette Panel Container */
+.archive-container {
+  font-family: var(--archive-font-sans);
+  color: var(--archive-text-primary);
+  pointer-events: none;
+}
+
+.archive-container a,
+.archive-container button {
+  pointer-events: auto;
+}
+
+/* Header & Title Typesetting */
+.archive-brand {
+  font-size: var(--archive-size-label);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--archive-text-primary);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.archive-brand:hover {
+  opacity: 0.65;
+}
+
+.archive-wip-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.15rem 0.45rem;
+  font-size: var(--archive-size-meta);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 9999px;
+  border: 1px solid var(--archive-border);
+  background: var(--archive-bg-panel);
+  backdrop-filter: blur(12px);
+  color: var(--archive-text-secondary);
+  line-height: 1;
+}
+
+.archive-title-group {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+}
+
+.archive-title {
+  font-size: var(--archive-size-display);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  color: var(--archive-text-primary);
+  margin: 0;
+}
+
+.archive-year {
+  font-size: var(--archive-size-display);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  color: var(--archive-text-muted);
+  margin: 0;
+}
+
+.archive-status {
+  font-size: var(--archive-size-meta);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--archive-text-muted);
+}
+
+/* Date & Narrative Typesetting */
+.archive-date {
+  font-family: var(--archive-font-mono);
+  font-size: var(--archive-size-meta);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: var(--archive-text-secondary);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.archive-narrative {
+  font-size: var(--archive-size-body);
+  line-height: 1.52;
+  font-weight: 400;
+  color: var(--archive-text-secondary);
+  text-wrap: pretty;
+  margin-bottom: 0.75rem;
+}
+
+.archive-narrative:last-child {
+  margin-bottom: 0;
+}
+
+/* Specs Table / Baduk Cell Details */
+.archive-specs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem 1rem;
+  padding-top: 0.75rem;
+  margin-top: 0.75rem;
+  border-top: 1px solid var(--archive-border);
+}
+
+.archive-spec-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.archive-spec-label {
+  font-family: var(--archive-font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--archive-text-muted);
+}
+
+.archive-spec-val {
+  font-family: var(--archive-font-mono);
+  font-size: var(--archive-size-meta);
+  font-weight: 500;
+  color: var(--archive-text-primary);
+}
+
+/* Right Wing: Media Stage & Carousel */
+.archive-stage-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  border: 1px solid var(--archive-border);
+  background: var(--archive-bg-panel);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+}
+
+.archive-media-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+}
+
+.archive-media-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+
+.archive-media-caption {
+  font-family: var(--archive-font-mono);
+  font-size: 0.65rem;
+  color: var(--archive-text-muted);
+  padding: 0.5rem 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-top: 1px solid var(--archive-border);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Nav Controls */
+.archive-stage-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s ease;
+  z-index: 5;
+}
+
+.archive-stage-card:hover .archive-stage-nav {
+  opacity: 0.85;
+}
+
+.archive-stage-nav:hover {
+  opacity: 1 !important;
+  transform: translateY(-50%) scale(1.08);
+}
+
+.archive-stage-nav--prev {
+  left: 0.6rem;
+}
+
+.archive-stage-nav--next {
+  right: 0.6rem;
+}
+
+/* Thumbnails Strip with Progress Bar (glauber.org signature) */
+.archive-thumbs-strip {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+}
+
+.archive-thumb-btn {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+.archive-thumb-img-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 0.35rem;
+  overflow: hidden;
+  border: 1px solid var(--archive-border);
+  opacity: 0.5;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.archive-thumb-btn[aria-current='true'] .archive-thumb-img-box {
+  opacity: 1;
+  border-color: var(--archive-text-primary);
+  transform: scale(1.02);
+}
+
+.archive-thumb-btn:hover .archive-thumb-img-box {
+  opacity: 0.85;
+}
+
+.archive-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.archive-thumb-bar {
+  position: relative;
+  width: 100%;
+  height: 2px;
+  background: var(--archive-border);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.archive-thumb-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--archive-text-primary);
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.1s linear;
+}
+
+/* Date Switcher Pill Bar */
+.archive-entry-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.85rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.archive-entry-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.archive-entry-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.55rem;
+  font-family: var(--archive-font-mono);
+  font-size: 0.65rem;
+  border-radius: 9999px;
+  border: 1px solid var(--archive-border);
+  background: var(--archive-bg-panel);
+  color: var(--archive-text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.archive-entry-tab:hover {
+  color: var(--archive-text-primary);
+  border-color: var(--archive-text-primary);
+}
+
+.archive-entry-tab[data-active='true'] {
+  background: var(--archive-text-primary);
+  color: #ffffff;
+  border-color: var(--archive-text-primary);
+}
+
+.dark .archive-entry-tab[data-active='true'] {
+  color: #000000;
+}
